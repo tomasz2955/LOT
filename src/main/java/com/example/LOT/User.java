@@ -14,13 +14,15 @@ public class User {
     private String lastName;
     private String email;
     private String phoneNumber;
+    private String password;
 
-    public User(Long id, String name, String lastName, String email, String phoneNumber) {
+    public User(Long id, String name, String lastName, String email, String phoneNumber, String password) {
         this.id = id;
         this.name = name;
         this.lastName = lastName;
         this.email = email;
         this.phoneNumber = phoneNumber;
+        this.password = password;
     }
 
     public User() {
@@ -64,5 +66,13 @@ public class User {
 
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }
