@@ -2,13 +2,14 @@ package com.example.LOT;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @CrossOrigin(origins = "http://localhost:3000")
-@RestController // to jest controller czy @Service? Aplikacja nie startuje
+@Service // to jest controller czy @Service? Aplikacja nie startuje
 public class UserService {
     //przydalby sie endpoint do logowania ktory moglby przy poprawnym logowaniu zwracac date jak dlugo logowanie powinno byc wazne
 
