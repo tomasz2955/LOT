@@ -1,29 +1,44 @@
 package com.example.LOT;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import java.util.Optional;
 
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
 public class UserController {
 
-    private final UserService userService;
+    private final UserRepository userRepository;
 
-    //@Autowired adnotacja nie potrzebna, jak wstrzykujesz przez konstruktor to spring to sam ogarnia
-    public UserController(UserService userService) {
-        this.userService = userService;
+    public UserController(UserRepository theUserRepository) {
+        userRepository = theUserRepository;
     }
 
-    @PostMapping("/register")
-    void createUser(@RequestBody User user) {
-        System.out.println("registering");
+    @PostMapping("/create/{user}")
+    public void saveUser(@RequestBody User theUser) {
+        userRepository.save(theUser);
     }
 
+    @PostMapping("/login/{id}")
+    public Optional<User> findById(@PathVariable Long id) {
+        return userRepository.findById(id);
+    }
 
-    @GetMapping
-    public List<User> getUsers() {
-        return userService.getUserList();
+    @DeleteMapping("/delete/{id}")
+    public void deleteById(@PathVariable Long id) {
+        userRepository.deleteById(id);
+    }
+
+    @PutMapping("/update/{user}")
+    public void updateUser(@RequestBody String name, String lastName, String password, String email, String phoneNumber) throws Exception {
+        User currentUser = userRepository.findByEmail(email);
+        if(currentUser != null) {
+            currentUser.setName(name);
+            currentUser.setLastName(lastName);
+            currentUser.setPhoneNumber(phoneNumber);
+            currentUser.setPassword(password);
+        } else {
+            throw new Exception("User does not exist");
+        }
     }
 }

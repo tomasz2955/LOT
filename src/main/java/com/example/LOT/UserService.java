@@ -1,55 +1,56 @@
 package com.example.LOT;
 
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
-//@CrossOrigin(origins = "http://localhost:3000")
-@Service // to jest controller czy @Service? Aplikacja nie startuje
+@CrossOrigin(origins = "http://localhost:3000")
+@Service
 public class UserService {
-    //przydalby sie endpoint do logowania ktory moglby przy poprawnym logowaniu zwracac date jak dlugo logowanie powinno byc wazne
 
-    private UserRepository userRepository;
-    public UserService(UserRepository userRepository) {
-        this.userRepository = userRepository;
+    private final UserRepository userRepository;
+
+    public UserService(UserRepository theUserRepository) {
+        userRepository = theUserRepository;
     }
 
-    @GetMapping
-    List<User> getUserList() {
+    public List<User> getUsers() {
         return userRepository.findAll();
     }
 
-    @PostMapping("/create/{user}") // musimy pogadać o koncepcji DTO https://www.baeldung.com/java-dto-pattern
-    User createUser(@RequestBody User user) {
-        return userRepository.save(user);
+    public Optional<User> findById(Long id) {
+        return userRepository.findById(id);
     }
 
-    @PostMapping("/login/{user}") // czy sprawdzales czy te endpointy działają przez postmana? Musimy pogadać o tym jak działa dodawanie parametrów do sciezki
-    void loginUser(@RequestBody User email, @PathVariable User password) { //typy email i password są niepoprawne
-
+    public LocalDateTime getDateAndTime (String password, String email) throws Exception {
+        User currentUser1 = userRepository.findByEmail(email);
+        User currentUser2 = userRepository.findByPassword(password);
+        if(currentUser1 != null || currentUser2 != null) {
+            return LocalDateTime.now();
+        }
+        throw new Exception("User does not exist");
     }
 
-    @DeleteMapping("/delete/{user}")  // powinienes odbierac samo id a nie calego Usera
-    public List<User> removeUser(@PathVariable User user) {  // musimy obgadac roznice pomiedzy @RequestBody vs @PathVariable
-        // https://www.baeldung.com/spring-request-response-body  https://www.baeldung.com/spring-pathvariable
-        userRepository.delete(user);
-        return userRepository.findAll();  // po co zwracac wszystkich uzytkownikow podczas update jednego?
+    public void saveUser(User theUser) {
+        userRepository.save(theUser);
     }
 
-    @PutMapping("/update/{user}")
-    public List<User> updateUser(@RequestBody User user, @PathVariable Long id) {
-        User currentuser = userRepository.findById(id).get(); //w momencie braku odnalezionego id, trzeba rzucic exception
-        currentuser.setName(user.getName());
-        currentuser.setLastName(user.getLastName());
-        currentuser.setEmail(user.getEmail()); // update bardzo naiwny, ktos moze podac tutaj niepoprawny email, email ktory juz istnieje itp. to trzeba jakos validowac
-        currentuser.setPhoneNumber(user.getPhoneNumber());
-        currentuser.setPassword(user.getPassword());
-        return userRepository.findAll(); // po co zwracac wszystkich uzytkownikow podczas update jednego?
+    public void deleteById(Long id) {
+        userRepository.deleteById(id);
     }
 
-
+    public void updateUser(String name, String lastName, String password, String email, String phoneNumber) throws Exception {
+        User currentUser = userRepository.findByEmail(email);
+        if(currentUser != null) {
+            currentUser.setName(name);
+            currentUser.setLastName(lastName);
+            currentUser.setPhoneNumber(phoneNumber);
+            currentUser.setPassword(password);
+        } else {
+            throw new Exception("User does not exist");
+        }
+    }
 }
