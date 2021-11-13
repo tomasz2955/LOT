@@ -22,9 +22,11 @@ const Navbar = (props) => {
     return (
         <AppBar position="static">
             <Toolbar>
-                <IconButton edge="start" color="inherit" aria-label="menu">
-                    <Home />
-                </IconButton>
+                <Link to='/' className={classes.navItem}>
+                    <IconButton edge="start" color="inherit" aria-label="menu">
+                        <Home />
+                    </IconButton>
+                </Link>
                 {links}
             </Toolbar>
         </AppBar>

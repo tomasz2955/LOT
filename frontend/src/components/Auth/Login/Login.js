@@ -1,12 +1,9 @@
 import React, {Fragment, useEffect, useState} from 'react'
 import classes from './Login.module.css'
-import Grid from "@material-ui/core/Grid";
-import Typography from "@material-ui/core/Typography";
-import TextField from "@material-ui/core/TextField";
-import Button from "@material-ui/core/Button";
-import CircularProgress from "@material-ui/core/CircularProgress";
 import {Link} from "react-router-dom";
 import axios from '../../../axios-config'
+import {CircularProgress, Grid, TextField, Typography} from "@mui/material";
+import Button from "@mui/material/Button";
 
 const Login = (props) => {
 
@@ -49,7 +46,7 @@ const Login = (props) => {
           <Grid item sm/>
           <Grid item sm>
             <img className={classes.image}
-                 src="https://media.istockphoto.com/vectors/right-arrow-vector-icon-on-transparent-background-right-arrow-icon-vector-id1013490744"
+                 src="https://www.creativefabrica.com/wp-content/uploads/2020/02/13/Letter-Logo-Graphics-1-59-580x386.jpg"
                  alt="monkey"/>
             <Typography variant="h3"
                         className={classes.pageTitle}>Login</Typography>

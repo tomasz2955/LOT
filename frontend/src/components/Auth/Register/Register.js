@@ -1,12 +1,8 @@
 import React, {Fragment, useEffect, useState} from 'react'
 import classes from './Register.module.css'
-import Grid from "@material-ui/core/Grid";
-import Typography from "@material-ui/core/Typography";
-import TextField from "@material-ui/core/TextField";
-import Button from "@material-ui/core/Button";
-import CircularProgress from "@material-ui/core/CircularProgress";
 import {Link} from "react-router-dom";
 import axios from '../../../axios-config'
+import {Button, CircularProgress, Grid, TextField, Typography} from "@mui/material";
 
 const Register = (props) => {
 
@@ -61,7 +57,7 @@ const Register = (props) => {
           <Grid item sm/>
           <Grid item sm>
             <img className={classes.image}
-                 src="https://media.istockphoto.com/vectors/right-arrow-vector-icon-on-transparent-background-right-arrow-icon-vector-id1013490744"
+                 src="https://w7.pngwing.com/pngs/657/810/png-transparent-social-media-linkedin-business-organization-company-plane-angle-company-logo.png"
                  alt="monkey"/>
             <Typography variant="h3"
                         className={classes.pageTitle}>Register</Typography>
