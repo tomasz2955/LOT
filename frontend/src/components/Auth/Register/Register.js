@@ -37,7 +37,7 @@ const Register = (props) => {
   const handleSubmit = (event) => {
     setBackendResponse('')
     event.preventDefault()
-    axios.post('/', {
+    axios.post('/register', {
       id: 'taki_id_sobie_wymyslilem',
       name: name,
       lastName: lastName,
