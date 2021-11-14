@@ -1,14 +1,16 @@
 import React, {Fragment, useEffect, useState} from 'react'
 import classes from './Login.module.css'
 import {Link} from "react-router-dom";
-import axios from '../../../axios-config'
 import {CircularProgress, Grid, TextField, Typography} from "@mui/material";
 import Button from "@mui/material/Button";
+import {login} from "../../../store/authActions";
+import {useDispatch} from "react-redux";
 
 const Login = (props) => {
 
   const [email, setEmail] = useState('guest')
   const [password, setPassword] = useState('guest')
+  const dispatch = useDispatch()
 
   const loading = false
 
@@ -27,17 +29,7 @@ const Login = (props) => {
 
   const handleSubmit = (event) => {
     event.preventDefault()
-    console.log(email)
-    console.log(password)
-    axios.post('/login', {
-      email: 'przeciez Takiego Emailu Nie Mozna miec ale nikt mi nie zabrania',
-      password: 'haslo',
-    }).then(response => {
-      console.log('udalo sie zalogowac')
-    }).catch((error) => {
-      console.log(error)
-      console.log('cos wybuchlo podczas logowania')
-    });
+    dispatch(login(email, password))
   }
 
   return (

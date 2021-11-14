@@ -9,56 +9,8 @@ import plane from '../../static/plane.png'
 import {Autocomplete, FormControlLabel, Radio, RadioGroup} from "@mui/material";
 import {DatePicker} from "@mui/lab";
 import Flights from "./Flights";
-
-export const mockFlights = [
-    {
-        id: "123",
-        origin: "Warszawa",
-        destination: "Wroclaw",
-        date: "19/07/2021",
-        startHour: "06:10",
-        endHour: "11:30",
-        price: "1499"
-    },
-    {
-        id: "12433",
-        origin: "Wroclaw",
-        destination: "Krakow",
-        date: "29/07/2021",
-        startHour: "16:10",
-        endHour: "21:30",
-        price: "11"
-    },
-    {
-        id: "12433",
-        origin: "Bytom",
-        destination: "Wroclaw",
-        date: "19/12/2022",
-        startHour: "08:10",
-        endHour: "12:30",
-        price: "4199"
-    },
-    {
-        id: "12563",
-        origin: "Szczecin",
-        destination: "Wroclaw",
-        date: "02/02/2022",
-        startHour: "22:10",
-        endHour: "23:30",
-        price: "4199"
-    },
-    {
-        id: "1263",
-        origin: "Szczecin",
-        destination: "Bytom",
-        date: "11/11/2022",
-        startHour: "07:20",
-        endHour: "10:30",
-        price: "1992"
-    },
-]
-
-
+import {useDispatch} from "react-redux";
+import {searchFlightClicked} from "../../store/flightActions";
 
 const Home = (props) => {
     //todo wybieranie kraju z dropdown
@@ -72,10 +24,10 @@ const Home = (props) => {
     const [origin, setOrigin] = useState('')
     const [destination, setDestination] = useState('')
     const [dateRange, setDateRange] = useState([null, null])
+    const dispatch = useDispatch()
 
 
     const [foundFLights, setFoundFlights] = useState([])
-
 
     return (
             <Fragment>
@@ -156,6 +108,13 @@ const Home = (props) => {
                             console.log(new Date(dateRange[0]).toISOString())
                             console.log(dateRange[1] ? new Date(dateRange[1]).toISOString(): null)
                             setFoundFlights(mockFlights.filter(flight => flight.origin === origin || flight.destination === destination))
+                            dispatch(searchFlightClicked({
+                                from: new Date(dateRange[0]).toISOString(),
+                                to: dateRange[1] ? new Date(dateRange[1]).toISOString(): null,
+                                origin: origin,
+                                destination: destination
+                            }))
+
                         }}>Search</Button>
                     </div>
                 </div>
@@ -169,3 +128,53 @@ const Home = (props) => {
 }
 
 export default Home
+
+
+export const mockFlights = [
+    {
+        id: "123",
+        origin: "Warszawa",
+        destination: "Wroclaw",
+        date: "19/07/2021",
+        startHour: "06:10",
+        endHour: "11:30",
+        price: "1499"
+    },
+    {
+        id: "12433",
+        origin: "Wroclaw",
+        destination: "Krakow",
+        date: "29/07/2021",
+        startHour: "16:10",
+        endHour: "21:30",
+        price: "11"
+    },
+    {
+        id: "12433",
+        origin: "Bytom",
+        destination: "Wroclaw",
+        date: "19/12/2022",
+        startHour: "08:10",
+        endHour: "12:30",
+        price: "4199"
+    },
+    {
+        id: "12563",
+        origin: "Szczecin",
+        destination: "Wroclaw",
+        date: "02/02/2022",
+        startHour: "22:10",
+        endHour: "23:30",
+        price: "4199"
+    },
+    {
+        id: "1263",
+        origin: "Szczecin",
+        destination: "Bytom",
+        date: "11/11/2022",
+        startHour: "07:20",
+        endHour: "10:30",
+        price: "1992"
+    },
+]
+

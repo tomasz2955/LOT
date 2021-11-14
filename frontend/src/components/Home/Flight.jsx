@@ -2,10 +2,13 @@ import React from 'react'
 import {Button, Card, CardContent, Typography} from "@mui/material";
 import ArrowRightAltIcon from '@mui/icons-material/ArrowRightAlt';
 import { useHistory } from "react-router-dom";
+import {useDispatch} from "react-redux";
+import {flightSelectClicked} from "../../store/flightActions";
 
 
 const Flight = (props) => {
 
+    const dispatch = useDispatch()
     let history = useHistory();
     return (
         <div style={{marginBottom: 10, marginTop: 10, display: "flex", justifyContent: "center"}}>
@@ -25,7 +28,10 @@ const Flight = (props) => {
                         </div>
                         <div>
                             <Button type="submit" color="success" variant="contained" style={{paddingBottom: 20, paddingTop: 20}}
-                            onClick={() => {history.push('finalize')}}>
+                            onClick={() => {
+                                dispatch(flightSelectClicked(props.flight))
+                                history.push('finalize')
+                            }}>
                                 <div>Select <strong>{'    '}{props.flight.price} zł</strong></div>
                             </Button>
                         </div>
