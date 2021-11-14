@@ -1,10 +1,12 @@
 import React from 'react'
 import {Button, Card, CardContent, Typography} from "@mui/material";
 import ArrowRightAltIcon from '@mui/icons-material/ArrowRightAlt';
+import { useHistory } from "react-router-dom";
 
 
 const Flight = (props) => {
 
+    let history = useHistory();
     return (
         <div style={{marginBottom: 10, marginTop: 10, display: "flex", justifyContent: "center"}}>
             <Card>
@@ -22,7 +24,8 @@ const Flight = (props) => {
                             </Typography>
                         </div>
                         <div>
-                            <Button type="submit" color="success" variant="contained" style={{paddingBottom: 20, paddingTop: 20}}>
+                            <Button type="submit" color="success" variant="contained" style={{paddingBottom: 20, paddingTop: 20}}
+                            onClick={() => {history.push('finalize')}}>
                                 <div>Select <strong>{'    '}{props.flight.price} zł</strong></div>
                             </Button>
                         </div>
