@@ -1,44 +1,51 @@
 package com.example.LOT;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
+
 public class UserController {
 
-    private final UserRepository userRepository;
+    private final UserService userService;
 
-    public UserController(UserRepository theUserRepository) {
-        userRepository = theUserRepository;
+    public UserController(UserService userService) {
+        this.userService = userService;
     }
 
-    @PostMapping("/create/{user}")
+    @PostMapping("/register")
     public void saveUser(@RequestBody User theUser) {
-        userRepository.save(theUser);
+        userService.saveUser(theUser);
     }
 
-    @PostMapping("/login/{id}")
+    @GetMapping("/login/{id}")
     public Optional<User> findById(@PathVariable Long id) {
-        return userRepository.findById(id);
+        return userService.findById(id);
     }
+
+    @GetMapping("/find")
+    public List<User> findAll(@RequestBody User theUser) {
+        return userService.getUsers();
+    }
+
 
     @DeleteMapping("/delete/{id}")
     public void deleteById(@PathVariable Long id) {
-        userRepository.deleteById(id);
+        userService.deleteById(id);
     }
 
-    @PutMapping("/update/{user}")
-    public void updateUser(@RequestBody String name, String lastName, String password, String email, String phoneNumber) throws Exception {
-        User currentUser = userRepository.findByEmail(email);
-        if(currentUser != null) {
-            currentUser.setName(name);
-            currentUser.setLastName(lastName);
-            currentUser.setPhoneNumber(phoneNumber);
-            currentUser.setPassword(password);
-        } else {
-            throw new Exception("User does not exist");
-        }
+   @PutMapping("/update/")
+    public void updateUser(@RequestBody NameAndLastNameDTO nameAndLastNameDTO) throws Exception {
+        User user =new User();
+        user.setEmail(nameAndLastNameDTO.getEmail());
+        user.setName(nameAndLastNameDTO.getName());
+        user.setLastName(nameAndLastNameDTO.getLastName());
+        userService.updateUser(user);
+
     }
 }
