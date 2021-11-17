@@ -1,0 +1,46 @@
+
+
+.seat {
+    border-radius: 10px 10px 0 0;
+    background: cornflowerblue;
+    padding: 20px;
+    margin: 10px 5px 10px 5px;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.hover-seat {
+    border-radius: 10px 10px 0 0;
+    background: cornflowerblue;
+    padding: 20px;
+    margin: 10px 5px 10px 5px;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.seat:hover {
+    background: orange;
+    color: white;
+    cursor: pointer;
+}
+
+.takenSeat {
+    border-radius: 10px 10px 0 0;
+    background: gray;
+    padding: 20px;
+    margin: 10px 5px 10px 5px;
+    text-align: center;
+    vertical-align: middle;
+    color: white;
+}
+
+.selectedSeat {
+    border-radius: 10px 10px 0 0;
+    background: green;
+    padding: 20px;
+    margin: 10px 5px 10px 5px;
+    text-align: center;
+    vertical-align: middle;
+    color: white;
+    cursor: pointer;
+}

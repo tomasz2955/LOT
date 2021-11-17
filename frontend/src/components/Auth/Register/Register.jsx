@@ -39,8 +39,7 @@ const Register = (props) => {
     event.preventDefault()
     axios.post('/register', {
       id: 'taki_id_sobie_wymyslilem',
-      name: name,
-      lastName: lastName,
+      fullName: name + '_' + lastName,
       email: email,
       phoneNumber: phoneNumber,
     }).then(response => {
