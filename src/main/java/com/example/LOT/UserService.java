@@ -1,9 +1,11 @@
 package com.example.LOT;
 
-import com.example.LOT.User;
-import com.example.LOT.UserRepository;
-import org.springframework.stereotype.Service;
 
+import org.modelmapper.ModelMapper;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -11,8 +13,11 @@ import java.util.Optional;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final ModelMapper mapper = new ModelMapper();
+
+
     public UserService(UserRepository theUserRepository) {
-        userRepository = theUserRepository;
+        this.userRepository = theUserRepository;
     }
 
     public List<User> getUsers() {
@@ -23,6 +28,7 @@ public class UserService {
         return userRepository.findById(id);
     }
 
+
     public void saveUser(User theUser) {
         userRepository.save(theUser);
     }
@@ -31,12 +37,27 @@ public class UserService {
         userRepository.deleteById(id);
     }
 
-    public void updateUser(User theUSer) throws Exception {
-        boolean result = userRepository.findByEmail(theUSer.getEmail());
-        if (result = true) {
-            userRepository.save(theUSer);
-        } else {
-            throw new Exception("email is not valid");
+
+    @Transactional
+    public User updateUser(Long id, User theUser) {
+        User editedUser = userRepository.findById(id).orElseThrow(RuntimeException::new);
+        editedUser.setName(theUser.getName());
+        editedUser.setLastName(theUser.getLastName());
+        editedUser.setPhoneNumber(theUser.getPhoneNumber());
+        editedUser.setPassword(theUser.getPassword());
+        return userRepository.save(editedUser);
+    }
+
+    @Transactional
+    public LoginResponseUserDto loginUser(User theUser) {
+        LoginUserDto userRequest = mapper.map(theUser, LoginUserDto.class);
+        User userr = userRepository.findByEmailAndPassword(userRequest.getEmail(), userRequest.getPassword());
+        if (userr == null) {
+            throw new RuntimeException();
         }
+        return new LoginResponseUserDto(LocalDateTime.now().plusHours(3), userr.getId());
     }
-    }
+
+
+
+}
