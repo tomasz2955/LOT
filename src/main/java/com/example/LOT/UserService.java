@@ -29,8 +29,15 @@ public class UserService {
     }
 
 
-    public void saveUser(User theUser) {
-        userRepository.save(theUser);
+    public void saveUser(RegisterUserDto registerUserDto) {
+        User mappingUser = mapper.map(registerUserDto, User.class);
+        mappingUser.setPassword(registerUserDto.getPassword());
+        mappingUser.setPhoneNumber(registerUserDto.getPhoneNumber());
+        mappingUser.setEmail(registerUserDto.getEmail());
+        String[] items = registerUserDto.getFullName().split("_");
+        mappingUser.setName(items[0]);
+        mappingUser.setLastName(items[1]);
+        userRepository.save(mappingUser);
     }
 
     public void deleteById(Long id) {
@@ -39,23 +46,30 @@ public class UserService {
 
 
     @Transactional
-    public User updateUser(Long id, User theUser) {
+    public void updateUser(Long id, UpdateUserDto updateUserDto) {
         User editedUser = userRepository.findById(id).orElseThrow(RuntimeException::new);
-        editedUser.setName(theUser.getName());
-        editedUser.setLastName(theUser.getLastName());
-        editedUser.setPhoneNumber(theUser.getPhoneNumber());
-        editedUser.setPassword(theUser.getPassword());
-        return userRepository.save(editedUser);
+        User mappingUser = mapper.map(updateUserDto, User.class);
+        if(mappingUser.getName() != null) {
+            editedUser.setName(mappingUser.getName());
+        }
+        if(mappingUser.getLastName() != null) {
+            editedUser.setLastName(mappingUser.getLastName());
+        }
+        if(mappingUser.getPhoneNumber() != null) {
+            editedUser.setPhoneNumber(mappingUser.getPhoneNumber());
+        }
+        if(mappingUser.getPassword() != null) {
+            editedUser.setPassword(mappingUser.getPassword());
+        }
+        userRepository.save(editedUser);
     }
 
     @Transactional
-    public LoginResponseUserDto loginUser(User theUser) {
-        LoginUserDto userRequest = mapper.map(theUser, LoginUserDto.class);
-        User userr = userRepository.findByEmailAndPassword(userRequest.getEmail(), userRequest.getPassword());
-        if (userr == null) {
-            throw new RuntimeException();
-        }
-        return new LoginResponseUserDto(LocalDateTime.now().plusHours(3), userr.getId());
+    public LoginResponseUserDto loginUser(LoginUserDto loginUserDto) {
+        User mappingUser = mapper.map(loginUserDto, User.class);
+        User editedUser = userRepository.findByEmailAndPassword(mappingUser.getEmail(), mappingUser.getPassword());
+        LoginResponseUserDto responseUser = mapper.map(editedUser, LoginResponseUserDto.class);
+        return new LoginResponseUserDto(LocalDateTime.now().plusHours(3), responseUser.getId());
     }
 
 

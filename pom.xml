@@ -51,9 +51,9 @@
             <artifactId>xmlunit-core</artifactId>
         </dependency>
 		<dependency>
-			<groupId>org.apache.maven.shared</groupId>
-			<artifactId>file-management</artifactId>
-			<version>3.0.0</version>
+			<groupId>org.hibernate.validator</groupId>
+			<artifactId>hibernate-validator</artifactId>
+			<version>6.0.13.Final</version>
 		</dependency>
 		<dependency>
 			<groupId>com.example</groupId>

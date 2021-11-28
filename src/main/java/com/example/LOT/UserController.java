@@ -1,9 +1,8 @@
 package com.example.LOT;
 
-import org.modelmapper.ModelMapper;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 
@@ -13,15 +12,14 @@ import java.util.Optional;
 public class UserController {
 
     private final UserService userService;
-    private final ModelMapper mapper= new ModelMapper();
 
     public UserController(UserService userService) {
         this.userService = userService;
     }
 
     @PostMapping("/register")
-    public void saveUser(@RequestBody User theUser) {
-        userService.saveUser(theUser);
+    public void saveUser(@RequestBody @Valid RegisterUserDto registerUserDto) {
+        userService.saveUser(registerUserDto);
     }
 
     @GetMapping("/login/{id}")
@@ -40,17 +38,13 @@ public class UserController {
     }
 
    @PutMapping("/update/{id}")
-    public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody UpdateUserDto updateUserDto) {
-        User userRequest = mapper.map(updateUserDto, User.class);
-        User user = userService.updateUser(id, userRequest);
-        return ResponseEntity.ok().body(user);
+    public void updateUser(@PathVariable Long id, @RequestBody UpdateUserDto updateUserDto) {
+        userService.updateUser(id, updateUserDto);
     }
 
-    @PutMapping("/login")
-    public ResponseEntity<LoginResponseUserDto> loginUser(@RequestBody LoginUserDto loginUserDto) {
-        User userRequest = mapper.map(loginUserDto, User.class);
-        LoginResponseUserDto user = userService.loginUser(userRequest);
-        return ResponseEntity.ok().body(user);
+    @PostMapping("/login")
+    public LoginResponseUserDto loginUser(@RequestBody LoginUserDto loginUserDto) {
+        return userService.loginUser(loginUserDto);
     }
 
 

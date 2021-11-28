@@ -7,6 +7,9 @@ public class LoginResponseUserDto {
     private LocalDateTime localDate;
     private Long id;
 
+    public LoginResponseUserDto() {
+    }
+
     public LoginResponseUserDto(LocalDateTime localDate, Long id) {
         this.localDate = localDate;
         this.id = id;

@@ -1,7 +1,12 @@
 package com.example.LOT;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.Size;
+
 public class LoginUserDto {
+    @Email(message = "Email should be valid")
     String email;
+    @Size(min = 6, max = 10, message = "Password must be between 6 and 10 characters")
     String password;
 
     public LoginUserDto(String email, String password) {
