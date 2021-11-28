@@ -40,6 +40,7 @@ const Register = (props) => {
     axios.post('/register', {
       id: 'taki_id_sobie_wymyslilem',
       fullName: name + '_' + lastName,
+      password: password,
       email: email,
       phoneNumber: phoneNumber,
     }).then(response => {
