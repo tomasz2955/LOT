@@ -12,6 +12,7 @@ public class Lot {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long Id;
+    //TODO jest lista musi byc relacja oneToMany
     private List<User> userList;
     private String departingFrom;
     private String destination;
