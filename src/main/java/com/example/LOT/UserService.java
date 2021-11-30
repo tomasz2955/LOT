@@ -31,13 +31,19 @@ public class UserService {
 
     public void saveUser(RegisterUserDto registerUserDto) {
         User mappingUser = mapper.map(registerUserDto, User.class);
-        mappingUser.setPassword(registerUserDto.getPassword());
-        mappingUser.setPhoneNumber(registerUserDto.getPhoneNumber());
-        mappingUser.setEmail(registerUserDto.getEmail());
-        String[] items = registerUserDto.getFullName().split("_");
-        mappingUser.setName(items[0]);
-        mappingUser.setLastName(items[1]);
-        userRepository.save(mappingUser);
+        boolean isPresent = userRepository.findByEmail(registerUserDto.getEmail()).isEmpty();
+        if(isPresent) {
+            mappingUser.setPassword(registerUserDto.getPassword());
+            mappingUser.setPhoneNumber(registerUserDto.getPhoneNumber());
+            mappingUser.setEmail(registerUserDto.getEmail());
+            String[] items = registerUserDto.getFullName().split("_");
+            mappingUser.setName(items[0]);
+            mappingUser.setLastName(items[1]);
+            userRepository.save(mappingUser);
+        }
+        else {
+            throw new RuntimeException("mail exists");
+        }
     }
 
     public void deleteById(Long id) {
@@ -68,8 +74,13 @@ public class UserService {
     public LoginResponseUserDto loginUser(LoginUserDto loginUserDto) {
         User mappingUser = mapper.map(loginUserDto, User.class);
         User editedUser = userRepository.findByEmailAndPassword(mappingUser.getEmail(), mappingUser.getPassword());
-        LoginResponseUserDto responseUser = mapper.map(editedUser, LoginResponseUserDto.class);
-        return new LoginResponseUserDto(LocalDateTime.now().plusHours(3), responseUser.getId());
+        if (editedUser!=null) {
+
+            LoginResponseUserDto responseUser = mapper.map(editedUser, LoginResponseUserDto.class);
+            return new LoginResponseUserDto(LocalDateTime.now().plusHours(3), responseUser.getId());
+        } else {
+            throw new RuntimeException("account does not exist");
+        }
     }
 
 

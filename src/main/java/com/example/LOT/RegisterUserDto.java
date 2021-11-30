@@ -1,15 +1,25 @@
 package com.example.LOT;
 
 
+import com.sun.istack.NotNull;
+
 import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 
 public class RegisterUserDto {
+    @NotEmpty
+    @Size(min = 1, max = 200, message = "Password must be between 1 and 200 characters")
     private String fullName;
+    @NotEmpty
     @Email(message = "Email should be valid")
+    @Size(min = 2, max = 20, message = "Password must be between 2 and 20 characters")
     private String email;
+    @NotEmpty
+    @Size(min = 9, max = 9)
     private String phoneNumber;
-    @Size(min = 6, max = 10, message = "Password must be between 6 and 10 characters")
+    @NotEmpty
+    @Size(min = 6, max = 20, message = "Password must be between 6 and 20 characters")
     private String password;
 
     public RegisterUserDto(String fullName, String email, String phoneNumber, String password) {

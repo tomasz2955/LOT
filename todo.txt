@@ -1,15 +1,14 @@
 LOGOWANIE
-1. logowanie bez emailu przechodzi do service - powinno zostac przechwycone na poziomie controllera poprzez adnotacje walidujące
-2. logowanie bez hasla przechodzi do service - powinno zostac przechwycone na poziomie controllera poprzez adnotacje walidujące
-3. logowanie złymi credentialami rzuca błąd na poziomie mappera bo przekazywany jest null - powinienes z bazy zwracac optionala i rzucac wlasnego exceptiona
-4. jako login mogę przekazać ekstremalnie długiego stringa
-5. jako haslo mogę przekazać ekstremalnie długiego stringa
-6. [READY] jak punkt zrobisz to dodaj na początku linii coś takiego jak tutaj
+1. [READY] logowanie bez emailu przechodzi do service - powinno zostac przechwycone na poziomie controllera poprzez adnotacje walidujące
+2. [READY] logowanie bez hasla przechodzi do service - powinno zostac przechwycone na poziomie controllera poprzez adnotacje walidujące
+3. [READY] logowanie złymi credentialami rzuca błąd na poziomie mappera bo przekazywany jest null - powinienes z bazy zwracac optionala i rzucac wlasnego exceptiona
+4. [READY] jako login mogę przekazać ekstremalnie długiego stringa
+5. [READY] jako haslo mogę przekazać ekstremalnie długiego stringa
 
 REJESTRACJA
-1. moge przekazac nr telefonu ktory nie ma ani jednej cyfry
-2. moge przekazac ekstremalnie długie stringi w dowolnych polach oprocz hasla
-3. jak nie przekaże imienia i nazwiska to leci exception na service - powinno byc lapane na poziomie controllera
-4. phoneNumber nawet jak go nie ma to konto sie zaklada
-5. sprobuj zalozyc konto z emailem i haslem goscia ktory istnieje ("kowalski@wp.pl" "asdfgh") potem zaloguj sie i zobacz co sie stanie
+1. [READY] moge przekazac nr telefonu ktory nie ma ani jednej cyfry
+2. [READY] moge przekazac ekstremalnie długie stringi w dowolnych polach oprocz hasla
+3. [READY] jak nie przekaże imienia i nazwiska to leci exception na service - powinno byc lapane na poziomie controllera
+4. [READY] phoneNumber nawet jak go nie ma to konto sie zaklada
+5. [READY] sprobuj zalozyc konto z emailem i haslem goscia ktory istnieje ("kowalski@wp.pl" "asdfgh") potem zaloguj sie i zobacz co sie stanie
 
