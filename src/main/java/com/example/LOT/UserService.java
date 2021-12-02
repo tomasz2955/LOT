@@ -15,7 +15,6 @@ public class UserService {
     private final UserRepository userRepository;
     private final ModelMapper mapper = new ModelMapper();
 
-
     public UserService(UserRepository theUserRepository) {
         this.userRepository = theUserRepository;
     }
@@ -31,8 +30,9 @@ public class UserService {
 
     public void saveUser(RegisterUserDto registerUserDto) {
         User mappingUser = mapper.map(registerUserDto, User.class);
-        boolean isPresent = userRepository.findByEmail(registerUserDto.getEmail()).isEmpty();
-        if(isPresent) {
+        User user = userRepository.findByEmail(registerUserDto.getEmail())
+                .orElseThrow(() -> new RuntimeException("mail exists"));
+//        if (isPresent) {
             mappingUser.setPassword(registerUserDto.getPassword());
             mappingUser.setPhoneNumber(registerUserDto.getPhoneNumber());
             mappingUser.setEmail(registerUserDto.getEmail());
@@ -41,10 +41,10 @@ public class UserService {
             mappingUser.setLastName(items[1]);
             userRepository.save(mappingUser);
         }
-        else {
-            throw new RuntimeException("mail exists");
-        }
-    }
+//        else {
+
+//        }
+//    }
 
     public void deleteById(Long id) {
         userRepository.deleteById(id);
@@ -73,13 +73,14 @@ public class UserService {
     @Transactional
     public LoginResponseUserDto loginUser(LoginUserDto loginUserDto) {
         User mappingUser = mapper.map(loginUserDto, User.class);
-        User editedUser = userRepository.findByEmailAndPassword(mappingUser.getEmail(), mappingUser.getPassword());
+//        User editedUser = userRepository.findByEmailAndPassword(mappingUser.getEmail(), mappingUser.getPassword());
+        User editedUser = null;
         if (editedUser!=null) {
 
             LoginResponseUserDto responseUser = mapper.map(editedUser, LoginResponseUserDto.class);
             return new LoginResponseUserDto(LocalDateTime.now().plusHours(3), responseUser.getId());
         } else {
-            throw new RuntimeException("account does not exist");
+            throw new UserNotFoundException();
         }
     }
 

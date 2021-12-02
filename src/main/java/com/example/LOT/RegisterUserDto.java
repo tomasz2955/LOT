@@ -5,11 +5,13 @@ import com.sun.istack.NotNull;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 public class RegisterUserDto {
     @NotEmpty
     @Size(min = 1, max = 200, message = "Password must be between 1 and 200 characters")
+//    @Pattern("we_qwe") regexp
     private String fullName;
     @NotEmpty
     @Email(message = "Email should be valid")
