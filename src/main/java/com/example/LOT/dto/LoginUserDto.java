@@ -1,4 +1,4 @@
-package com.example.LOT;
+package com.example.LOT.dto;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;

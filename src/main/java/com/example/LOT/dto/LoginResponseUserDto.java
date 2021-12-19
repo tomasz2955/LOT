@@ -1,4 +1,4 @@
-package com.example.LOT;
+package com.example.LOT.dto;
 
 
 import java.time.LocalDateTime;

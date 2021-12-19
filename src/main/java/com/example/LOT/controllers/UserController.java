@@ -1,5 +1,11 @@
-package com.example.LOT;
+package com.example.LOT.controllers;
 
+import com.example.LOT.dto.LoginResponseUserDto;
+import com.example.LOT.dto.LoginUserDto;
+import com.example.LOT.dto.RegisterUserDto;
+import com.example.LOT.dto.UpdateUserDto;
+import com.example.LOT.entity.User;
+import com.example.LOT.service.UserService;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;

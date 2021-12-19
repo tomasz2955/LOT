@@ -1,5 +1,7 @@
 package com.example.LOT;
 
+import com.example.LOT.entity.User;
+import com.example.LOT.repository.UserRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
