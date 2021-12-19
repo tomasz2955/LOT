@@ -16,7 +16,8 @@ public class FlightController {
         this.flightService = flightService;
     }
 
-    @GetMapping("/findflight")
+    @GetMapping("/findflight") // sciezek nie robimy camel case, pootwieraj strony w przeglądarce i pooglądaj jak wyglądają, np https://www.olx.pl/d/oferta/nawigacja-garmin-nuvi-3490-lmt-CID5-IDKT1Xo.html#91b4089536
+    //tutaj dałbym poprostu /flights
     public List<Flight> findAll() {
         return flightService.getFlights();
     }

@@ -15,6 +15,7 @@ public class User {
     private String email;
     private String phoneNumber;
     private String password;
+    //tu chyba powinna byc lista biletów ale wyjdzie ci w praniu gdy dodasz logikę do kupowania biletu
 
     public User(String name, String lastName, String email, String phoneNumber, String password) {
         this.name = name;

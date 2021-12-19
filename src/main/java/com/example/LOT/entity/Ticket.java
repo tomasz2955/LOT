@@ -14,18 +14,8 @@ public class Ticket {
     @ManyToOne
     @JoinColumn(name = "flight_id")
     private Flight flight;
-    private String dateOfPurchase;
+    private Date dateOfPurchase;
     private Double ticketPrice;
-
-    public Ticket(User user, Flight flight, String dateOfPurchase, Double ticketPrice) {
-        this.user = user;
-        this.flight = flight;
-        this.dateOfPurchase = dateOfPurchase;
-        this.ticketPrice = ticketPrice;
-    }
-
-    public Ticket() {
-    }
 
     public User getUser() {
         return user;
@@ -43,11 +33,11 @@ public class Ticket {
         this.flight = flight;
     }
 
-    public String getDateOfPurchase() {
+    public Date getDateOfPurchase() {
         return dateOfPurchase;
     }
 
-    public void setDateOfPurchase(String dateOfPurchase) {
+    public void setDateOfPurchase(Date dateOfPurchase) {
         this.dateOfPurchase = dateOfPurchase;
     }
 

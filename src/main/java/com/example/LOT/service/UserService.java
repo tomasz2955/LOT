@@ -80,7 +80,7 @@ public class UserService {
     public LoginResponseUserDto loginUser(LoginUserDto loginUserDto) {
         User mappingUser = mapper.map(loginUserDto, User.class);
         User editedUser = userRepository.findByEmailAndPassword(mappingUser.getEmail(), mappingUser.getPassword());
-        if (editedUser!=null) {
+        if (editedUser!=null) { //nie sprawdzamy nulla działamy na optionalu
 
             LoginResponseUserDto responseUser = mapper.map(editedUser, LoginResponseUserDto.class);
             return new LoginResponseUserDto(LocalDateTime.now().plusHours(3), responseUser.getId());

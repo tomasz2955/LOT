@@ -12,4 +12,10 @@ public class TicketController {
     public TicketController(TicketService ticketService) {
         this.ticketService = ticketService;
     }
+
+    //potrzebuję endpoint który na podstawie id użytkownika zwróci mi jego wszystkie bilety
+
+    //potrzebuję endpointu który umożliwi mi kupno biletu na podstawie id usera i id lotu
+
+    //potrzebuję endpointu do zwrotu biletu, w logice trzeba dodać sprawdzenie czy lot nie jest za wczesniej niż 24h, jeżeli tak to rzucić exception ze zwrot juz jest niemożliwy
 }
