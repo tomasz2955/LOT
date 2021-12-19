@@ -16,7 +16,8 @@ public class FlightService {
     }
 
     public List<Flight> getFlights() {
-        return flightRepository.findAll();
+        return flightRepository.findAll(); // zwracasz encję do controllera, powinieneś użyć mapera i przekazać
+        //FlightDto. na razie moze zwrocic to samo ale będziemy mieli elastyczność na przyszłość
     }
 
 }

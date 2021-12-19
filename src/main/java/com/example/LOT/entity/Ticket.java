@@ -15,7 +15,7 @@ public class Ticket {
     @JoinColumn(name = "flight_id")
     private Flight flight;
     private Date dateOfPurchase;
-    private Double ticketPrice;
+    private Double ticketPrice; //poszperaj w necie czemu nie powinno się uzywać double do trzymania kasy i jakie są alternatywy
 
     public User getUser() {
         return user;

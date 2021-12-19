@@ -13,10 +13,11 @@ public class Flight {
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
     private String flightNumber;
-    private String origin;
+    private String origin; //origin i destination moze byc tym samym enumem
     private String destination;
-    private String airline;
+    private String airline; //zrobilbym z tego enuma z racji tego ze jest pewna ograniczona pula linii lotniczych
     private Date date;
+    //potrzebuje pola ticketTotalAmount do okreslenia ile biletów jest na dany lot i ticketAmountLeft który powie nam ile biletów zostało
 
     public String getFlightNumber() {
         return flightNumber;
