@@ -16,7 +16,18 @@ public class Flight {
     private String origin;
     private String destination;
     private String airline;
-    private Date date;
+    private String date;
+
+    public Flight(String flightNumber, String origin, String destination, String airline, String date) {
+        this.flightNumber = flightNumber;
+        this.origin = origin;
+        this.destination = destination;
+        this.airline = airline;
+        this.date = date;
+    }
+
+    public Flight() {
+    }
 
     public String getFlightNumber() {
         return flightNumber;
@@ -52,11 +63,11 @@ public class Flight {
 
 
 
-    public Date getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(String date) {
         this.date = date;
     }
 }
