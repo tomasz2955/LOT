@@ -1,6 +1,7 @@
 package com.example.LOT.entity;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
@@ -14,7 +15,7 @@ public class Ticket {
     @ManyToOne
     @JoinColumn(name = "flight_id")
     private Flight flight;
-    private String dateOfPurchase;
+    private LocalDateTime dateOfPurchase; // LocalDateTime
     private Double ticketPrice;
 
     public Ticket(User user, Flight flight, String dateOfPurchase, Double ticketPrice) {
