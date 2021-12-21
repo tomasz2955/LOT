@@ -33,6 +33,11 @@ public class UserController {
         return userService.findById(id);
     }
 
+    @GetMapping("/tickets/{id}")
+    public Optional<User> findTicketById(@PathVariable Long id) {
+        return userService.findTicketById(id);
+    }
+
     @GetMapping("/find")
     public List<User> findAll() {
         return userService.getUsers();

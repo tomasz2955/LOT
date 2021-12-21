@@ -34,6 +34,14 @@ public class UserService {
         return userRepository.findById(id);
     }
 
+    public Optional<User> findTicketById(Long id) {
+        boolean isPresent = userRepository.findById(id).isEmpty();
+        if(isPresent) {
+            return userRepository.findById(id).se
+        }
+
+    }
+
 
     public void saveUser(RegisterUserDto registerUserDto) {
         User mappingUser = mapper.map(registerUserDto, User.class);
