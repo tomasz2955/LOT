@@ -1,5 +1,7 @@
 package com.example.LOT.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -13,6 +15,7 @@ public class User {
     private String email;
     private String phoneNumber;
     private String password;
+    @JsonManagedReference
     @OneToMany(mappedBy="user")
     private List<Ticket> tickets;
 

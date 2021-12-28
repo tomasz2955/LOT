@@ -1,31 +1,40 @@
 package com.example.LOT.controllers;
 
-import com.example.LOT.entity.Flight;
+import com.example.LOT.dto.UserTicketsDto;
 import com.example.LOT.entity.Ticket;
-import com.example.LOT.entity.User;
 import com.example.LOT.service.TicketService;
+import com.example.LOT.service.UserService;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
-import java.util.Optional;
 
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
-
+@RequestMapping("/tickets")
 public class TicketController {
     private final TicketService ticketService;
-    public TicketController(TicketService ticketService) {
+    private final UserService userService;
+
+    public TicketController(TicketService ticketService, UserService userService) {
         this.ticketService = ticketService;
+        this.userService = userService;
     }
 
 
-    @GetMapping("/tickets")
+    @GetMapping()
     public List<Ticket> findAll() {
         return ticketService.getTickets();
     }
+
+    @GetMapping("/{id}")
+    public UserTicketsDto findTicketById(@PathVariable Long id) {
+        return userService.findTicketById(id);
+    }
+
 
     //potrzebuję endpoint który na podstawie id użytkownika zwróci mi jego wszystkie bilety
 
