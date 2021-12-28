@@ -15,7 +15,7 @@ public class Ticket {
     @ManyToOne
     @JoinColumn(name = "flight_id")
     private Flight flight;
-    private LocalDateTime dateOfPurchase; // LocalDateTime
+    private String dateOfPurchase;
     private Double ticketPrice;
 
     public Ticket(User user, Flight flight, String dateOfPurchase, Double ticketPrice) {

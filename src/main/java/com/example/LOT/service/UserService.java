@@ -1,10 +1,7 @@
 package com.example.LOT.service;
 
 
-import com.example.LOT.dto.LoginResponseUserDto;
-import com.example.LOT.dto.LoginUserDto;
-import com.example.LOT.dto.RegisterUserDto;
-import com.example.LOT.dto.UpdateUserDto;
+import com.example.LOT.dto.*;
 import com.example.LOT.entity.User;
 import com.example.LOT.repository.UserRepository;
 import org.modelmapper.ModelMapper;
@@ -34,12 +31,12 @@ public class UserService {
         return userRepository.findById(id);
     }
 
-    public Optional<User> findTicketById(Long id) {
-        boolean isPresent = userRepository.findById(id).isEmpty();
-        if(isPresent) {
-            return userRepository.findById(id).se
-        }
 
+
+    public UserTicketsDto findTicketById(Long id) {
+        User editedUser = userRepository.findById(id).orElseThrow(RuntimeException::new);
+        UserTicketsDto responseUser = mapper.map(editedUser, UserTicketsDto.class);
+        return new UserTicketsDto(responseUser.getId(), responseUser.getTickets());
     }
 
 

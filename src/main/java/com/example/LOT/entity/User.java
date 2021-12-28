@@ -7,13 +7,13 @@ import java.util.List;
 public class User {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
-    @OneToMany
     private Long id;
     private String name;
     private String lastName;
     private String email;
     private String phoneNumber;
     private String password;
+    @OneToMany(mappedBy="user")
     private List<Ticket> tickets;
 
     //tu chyba powinna byc lista biletów ale wyjdzie ci w praniu gdy dodasz logikę do kupowania biletu
