@@ -4,6 +4,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import java.time.LocalDate;
 
 
 @Entity
@@ -16,9 +17,9 @@ public class Flight {
     private String origin;
     private String destination;
     private String airline;
-    private String date;
+    private LocalDate date;
 
-    public Flight(String flightNumber, String origin, String destination, String airline, String date) {
+    public Flight(String flightNumber, String origin, String destination, String airline, LocalDate date) {
         this.flightNumber = flightNumber;
         this.origin = origin;
         this.destination = destination;
@@ -63,11 +64,11 @@ public class Flight {
 
 
 
-    public String getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
-    public void setDate(String date) {
+    public void setDate(LocalDate date) {
         this.date = date;
     }
 }

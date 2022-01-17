@@ -39,6 +39,9 @@ public class TicketController {
         ticketService.buyTicket(buyingTicketDto);
     }
 
+    @DeleteMapping("/delete/{id}")
+    public void deleteTicketById(@PathVariable Long id) {
+        ticketService.deleteById(id);
+    }
 
-    //potrzebuję endpointu do zwrotu biletu, w logice trzeba dodać sprawdzenie czy lot nie jest za wczesniej niż 24h, jeżeli tak to rzucić exception ze zwrot juz jest niemożliwy
 }

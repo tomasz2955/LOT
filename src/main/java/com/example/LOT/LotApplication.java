@@ -46,8 +46,8 @@ public class LotApplication implements CommandLineRunner {
 		userRepository.save(user1);
 		userRepository.save(user2);
 
-		Flight flight1 = new Flight("WE34567", "Poland", "Germany", "Wizzair", "2021-12-20");
-		Flight flight2 = new Flight("XC12001", "Italy", "Poland", "Ryanair", "2022-01-20");
+		Flight flight1 = new Flight("WE34567", "Poland", "Germany", "Wizzair", LocalDate.now().plusDays(5));
+		Flight flight2 = new Flight("XC12001", "Italy", "Poland", "Ryanair", LocalDate.now());
 		flightRepository.save(flight1);
 		flightRepository.save(flight2);
 

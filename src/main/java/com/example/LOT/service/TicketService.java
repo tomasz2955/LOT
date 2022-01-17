@@ -12,6 +12,7 @@ import com.example.LOT.repository.UserRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -41,8 +42,16 @@ public class TicketService {
         User findUser = userRepository.findById(buyingTicketDto.getUserId()).orElseThrow();
         Flight findFlight = flightRepository.findById(buyingTicketDto.getFlightId()).orElseThrow();
         ticketRepository.save(new Ticket(findUser, findFlight, LocalDateTime.now(), 9000.25));
+    }
 
+    public void deleteById(Long id) {
+        Ticket findTicket = ticketRepository.findById(id).orElseThrow();
+        if(findTicket.getFlight().getDate().isEqual(LocalDate.now())) {
+            throw new RuntimeException("You can not return ticket");
+        } else {
 
+            ticketRepository.deleteById(id);
+        }
     }
 
 
