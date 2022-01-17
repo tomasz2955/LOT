@@ -1,5 +1,6 @@
 package com.example.LOT.controllers;
 
+
 import com.example.LOT.entity.Flight;
 import com.example.LOT.service.FlightService;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -16,8 +17,7 @@ public class FlightController {
         this.flightService = flightService;
     }
 
-    @GetMapping("/flights") // sciezek nie robimy camel case, pootwieraj strony w przeglądarce i pooglądaj jak wyglądają, np https://www.olx.pl/d/oferta/nawigacja-garmin-nuvi-3490-lmt-CID5-IDKT1Xo.html#91b4089536
-    //tutaj dałbym poprostu /flights
+    @GetMapping("/flights")
     public List<Flight> findAll() {
         return flightService.getFlights();
     }

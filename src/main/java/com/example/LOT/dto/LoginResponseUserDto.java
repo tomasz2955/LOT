@@ -1,10 +1,11 @@
 package com.example.LOT.dto;
 
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public class LoginResponseUserDto {
-    private LocalDateTime localDate;
+    private LocalDateTime localDate = LocalDateTime.now().plusHours(3);
     private Long id;
 
     public LoginResponseUserDto() {
@@ -20,6 +21,7 @@ public class LoginResponseUserDto {
     }
 
     public void setLocalDate(LocalDateTime localDate) {
+
         this.localDate = localDate;
     }
 

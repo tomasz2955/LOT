@@ -1,37 +1,34 @@
-package com.example.LOT.entity;
-
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-
-import javax.persistence.*;
+package com.example.LOT.dto;
+import com.example.LOT.entity.Ticket;
 import java.util.List;
 
-@Entity
-public class User {
-    @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
-    private Long id;
-    private String name;
-    private String lastName;
-    private String email;
-    private String phoneNumber;
-    private String password;
-    @JsonManagedReference
-    @OneToMany(mappedBy="user")
-    private List<Ticket> tickets;
+public class FindByIdResponseDto {
+        private Long id;
+        private String name;
+        private String lastName;
+        private String email;
+        private String phoneNumber;
+        private List<Ticket> tickets;
 
-
-    public User(String name, String lastName, String email, String phoneNumber, String password, List<Ticket> tickets) {
+    public FindByIdResponseDto(Long id, String name, String lastName, String email, String phoneNumber, List<Ticket> tickets) {
+        this.id = id;
         this.name = name;
         this.lastName = lastName;
         this.email = email;
         this.phoneNumber = phoneNumber;
-        this.password = password;
         this.tickets = tickets;
     }
 
-    public User() {
+    public FindByIdResponseDto() {
     }
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getName() {
         return name;
@@ -65,22 +62,6 @@ public class User {
         this.phoneNumber = phoneNumber;
     }
 
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
     public List<Ticket> getTickets() {
         return tickets;
     }
@@ -89,3 +70,6 @@ public class User {
         this.tickets = tickets;
     }
 }
+
+
+

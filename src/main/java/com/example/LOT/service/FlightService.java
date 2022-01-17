@@ -1,7 +1,11 @@
 package com.example.LOT.service;
 
+import com.example.LOT.dto.FindByIdResponseDto;
+
 import com.example.LOT.entity.Flight;
+import com.example.LOT.entity.User;
 import com.example.LOT.repository.FlightRepository;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -11,13 +15,20 @@ import java.util.List;
 public class FlightService {
 
     private final FlightRepository flightRepository;
+    private final ModelMapper mapper = new ModelMapper();
+
     public FlightService(FlightRepository flightRepository) {
         this.flightRepository = flightRepository;
     }
 
     public List<Flight> getFlights() {
-        return flightRepository.findAll(); // zwracasz encję do controllera, powinieneś użyć mapera i przekazać
-        //FlightDto. na razie moze zwrocic to samo ale będziemy mieli elastyczność na przyszłość
+        return flightRepository.findAll();
+
+
+
+
+
+
     }
 
 }

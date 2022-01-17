@@ -3,6 +3,7 @@ package com.example.LOT.entity;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
 public class Ticket {
@@ -16,10 +17,10 @@ public class Ticket {
     @ManyToOne
     @JoinColumn(name = "flight_id")
     private Flight flight;
-    private String dateOfPurchase;
+    private LocalDateTime dateOfPurchase;
     private Double ticketPrice;
 
-    public Ticket(User user, Flight flight, String dateOfPurchase, Double ticketPrice) {
+    public Ticket(User user, Flight flight, LocalDateTime dateOfPurchase, Double ticketPrice) {
         this.user = user;
         this.flight = flight;
         this.dateOfPurchase = dateOfPurchase;
@@ -45,11 +46,11 @@ public class Ticket {
         this.flight = flight;
     }
 
-    public String getDateOfPurchase() {
+    public LocalDateTime getDateOfPurchase() {
         return dateOfPurchase;
     }
 
-    public void setDateOfPurchase(String dateOfPurchase) {
+    public void setDateOfPurchase(LocalDateTime dateOfPurchase) {
         this.dateOfPurchase = dateOfPurchase;
     }
 
