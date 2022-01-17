@@ -46,6 +46,9 @@ public class UserService {
             registerUser.setPassword(registerUserDto.getPassword());
             registerUser.setPhoneNumber(registerUserDto.getPhoneNumber());
             registerUser.setEmail(registerUserDto.getEmail());
+            //tutaj zrob test jednostkowy w którym full name nie ma _ i zobacz co sie stanie
+            //następnie popraw logikę tak żeby mimo błędnego formatu fullname aplikacja rzuciła exception który cos
+            //podpowie przeglądarce zamiast rzucać przypadkowo wygenerowany message
             String[] items = registerUserDto.getFullName().split("_");
             registerUser.setName(items[0]);
             registerUser.setLastName(items[1]);
@@ -64,7 +67,7 @@ public class UserService {
 
     @Transactional
     public void updateUser(Long id, UpdateUserDto updateUserDto) {
-        User editedUser = userRepository.findById(id).orElseThrow();
+        User editedUser = userRepository.findById(id).orElseThrow(); //wszedzie gdzie orElseThrow musi byc przekazany message z sensownym message
         mapper.map(updateUserDto, User.class);
         if(updateUserDto.getName() != null) {
             editedUser.setName(updateUserDto.getName());
@@ -72,10 +75,11 @@ public class UserService {
         if(updateUserDto.getLastName() != null) {
             editedUser.setLastName(updateUserDto.getLastName());
         }
-        if(updateUserDto.getPhoneNumber() != null) {
+        if(updateUserDto.getPhoneNumber() != null) { //brak walidacji numeru telefonu zezwala mi zapisać np &#^$@&#*$&@#$&#$&#(*$
             editedUser.setPhoneNumber(updateUserDto.getPhoneNumber());
         }
-        if(updateUserDto.getPassword() != null) {
+        if(updateUserDto.getPassword() != null) { //ogolnie dto nie jest zwalidowane i można podać wszystko co sie chce
+            //moge nawet podać haslo jako pusty string "" i będe miec haslo które nie zawiera zadengo znaku
             editedUser.setPassword(updateUserDto.getPassword());
         }
         userRepository.save(editedUser);

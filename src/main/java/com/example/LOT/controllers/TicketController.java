@@ -34,7 +34,7 @@ public class TicketController {
         return userService.findTicketById(id);
     }
 
-    @PostMapping("/buy")
+    @PostMapping("/buy") //chyba mówiliśmy o kupowaniu sztuk biletów także gdzieś te info trzebaby tu przekazać
     public void buyTicket(@RequestBody BuyingTicketDto buyingTicketDto) {
         ticketService.buyTicket(buyingTicketDto);
     }

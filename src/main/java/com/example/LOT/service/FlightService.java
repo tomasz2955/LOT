@@ -15,7 +15,7 @@ import java.util.List;
 public class FlightService {
 
     private final FlightRepository flightRepository;
-    private final ModelMapper mapper = new ModelMapper();
+    private final ModelMapper mapper = new ModelMapper(); //nieuzyte rzeczy, importy usuwamy
 
     public FlightService(FlightRepository flightRepository) {
         this.flightRepository = flightRepository;
