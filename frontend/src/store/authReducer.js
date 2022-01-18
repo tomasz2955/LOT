@@ -1,7 +1,6 @@
 import * as actionTypes from "./actionTypes";
 
 const initialState = {
-    token: null,
     loading: false,
     error: null,
     isLoggedIn: false,
@@ -20,7 +19,6 @@ const authReducer = (state = initialState, action) => {
             return {
                 ...state,
                 loading: false,
-                token: action.token,
                 isLoggedIn: true
             }
         }
@@ -29,6 +27,12 @@ const authReducer = (state = initialState, action) => {
                 ...state,
                 loading: false,
                 error: action.error
+            }
+        }
+        case actionTypes.CHECK_LOCAL_STORAGE_IF_LOGGED_IN: {
+            return {
+                ...state,
+                isLoggedIn: action.isLoggedIn
             }
         }
         case actionTypes.LOGOUT: {

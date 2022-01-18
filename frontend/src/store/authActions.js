@@ -7,14 +7,22 @@ export const loginStart = () => {
     }
 }
 
+export const checkLocalStorageIfLoggedIn = () => {
+    const isLoggedIn = localStorage.getItem('userId')
+
+    return {
+        type: actionTypes.CHECK_LOCAL_STORAGE_IF_LOGGED_IN,
+        isLoggedIn: isLoggedIn
+    }
+}
+
 export const login = (email, password) => {
     return dispatch => {
         dispatch(loginStart())
-
         axios.post('/login', {email, password}).then(response => {
-            console.log(response)
-            localStorage.setItem('token', response.data.token)
-            dispatch(loginSuccess(response.data.token))
+            localStorage.setItem('userId', response.data.id)
+            localStorage.setItem('expirationDate', response.data.localDate)
+            dispatch(loginSuccess(response.data.id))
         })
             .catch(() => {
                 dispatch(loginFailed("Wrong username or password"))

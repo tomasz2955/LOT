@@ -16,6 +16,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional; //nieuzyte mozna wwyrzucic
+import java.util.stream.Collectors;
 
 
 @Service

@@ -1,15 +1,16 @@
 import React, {Fragment, useEffect, useState} from 'react'
 import classes from './Login.module.css'
-import {Link} from "react-router-dom";
+import {Link, Redirect} from "react-router-dom";
 import {CircularProgress, Grid, TextField, Typography} from "@mui/material";
 import Button from "@mui/material/Button";
 import {login} from "../../../store/authActions";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 
 const Login = (props) => {
 
-  const [email, setEmail] = useState('guest')
-  const [password, setPassword] = useState('guest')
+  const [email, setEmail] = useState('bator@wp.pl')
+  const [password, setPassword] = useState('qwerty')
+  const isLoggedIn = useSelector(state => state.auth.isLoggedIn)
   const dispatch = useDispatch()
 
   const loading = false
@@ -59,6 +60,11 @@ const Login = (props) => {
           </Grid>
           <Grid item sm/>
         </Grid>
+        {isLoggedIn && <Redirect
+            to={{
+              pathname: "/"
+            }}
+        />}
       </Fragment>
   )
 }

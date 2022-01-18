@@ -9,8 +9,20 @@ import Navbar from "./components/Auth/Navbar";
 import Register from "./components/Auth/Register/Register";
 import Home from "./components/Home/Home";
 import Finalization from "./components/Home/Finalization";
+import MyTickets from "./components/Home/MyTickets";
+import {useEffect} from "react";
+import {useDispatch} from "react-redux";
+import {checkLocalStorageIfLoggedIn} from "./store/authActions";
 
 function App() {
+
+    const dispatch = useDispatch()
+
+    useEffect(() => {
+        dispatch(checkLocalStorageIfLoggedIn())
+    }, [])
+
+
   return (
       <Router>
         <Navbar/>
@@ -21,6 +33,9 @@ function App() {
             </Route>
             <Route path="/register">
                 <Register />
+            </Route>
+            <Route path="/my-flights">
+                <MyTickets/>
             </Route>
             <Route path="/finalize">
                   <Finalization />
