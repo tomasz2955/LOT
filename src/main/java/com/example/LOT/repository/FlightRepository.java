@@ -7,5 +7,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface FlightRepository extends JpaRepository<Flight, Long> {
-    Flight findByOriginAndDestination (String origin, String destination);
+    Flight findByOriginAndDestination (String origin, String destination); //to powinno zwracac optionala bo nie wiesz czy cos znajdzie czy nie
 }
