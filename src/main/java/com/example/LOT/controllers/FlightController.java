@@ -21,4 +21,9 @@ public class FlightController {
     public List<Flight> findAll() {
         return flightService.getFlights();
     }
+
+    //potrzebny endpoint do wyszukiwania lotów po origin i destination
+    // oraz przedział czasowy (from,to) i musisz zwrócić loty w w tym kierunku które są w tym przedziale czasowym
+    //https://www.baeldung.com/spring-data-jpa-query-by-date
+    //https://stackoverflow.com/questions/39784344/check-date-between-two-other-dates-spring-data-jpa
 }

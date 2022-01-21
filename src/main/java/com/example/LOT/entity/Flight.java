@@ -28,7 +28,8 @@ public class Flight {
         this.airline = airline;
         this.departureDate = departureDate;
         this.dateOfArrival = dateOfArrival;
-        this.price = 5000.00;
+        this.price = 5000.00; //proponuje wrzucic cene do konstruktora zeby miec mozliwosc ustawiania jej. Potem moze zrobimy nawet endpoint dla adminów
+        //ktorzy z poziomu przeglądarki będą w stanie dodać swoje loty
     }
 
     public Flight() {
