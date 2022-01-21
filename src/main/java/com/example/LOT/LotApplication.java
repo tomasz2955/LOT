@@ -12,10 +12,8 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 
 @SpringBootApplication
 public class LotApplication implements CommandLineRunner {
@@ -46,13 +44,13 @@ public class LotApplication implements CommandLineRunner {
 		userRepository.save(user1);
 		userRepository.save(user2);
 
-		Flight flight1 = new Flight("WE34567", "Poland", "Germany", "Wizzair", LocalDate.now().plusDays(5));
-		Flight flight2 = new Flight("XC12001", "Italy", "Poland", "Ryanair", LocalDate.now());
+		Flight flight1 = new Flight("WE34567", "Poland", "Germany", "Wizzair", LocalDateTime.now().plusHours(9), LocalDateTime.now().plusHours(13));
+		Flight flight2 = new Flight("XC12001", "Italy", "Poland", "Ryanair", LocalDateTime.now().plusHours(29), LocalDateTime.now().plusHours(79));
 		flightRepository.save(flight1);
 		flightRepository.save(flight2);
 
-		Ticket ticket1 = new Ticket(user1, flight1, LocalDateTime.now(), 2000.45);
-		Ticket ticket2 = new Ticket(user1, flight2, LocalDateTime.now(), 823.99);
+		Ticket ticket1 = new Ticket(user1, flight1, LocalDateTime.now());
+		Ticket ticket2 = new Ticket(user1, flight2, LocalDateTime.now());
 		ticketRepository.save(ticket1);
 		ticketRepository.save(ticket2);
 	}

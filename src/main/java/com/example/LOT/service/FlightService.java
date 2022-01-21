@@ -1,11 +1,8 @@
 package com.example.LOT.service;
 
-import com.example.LOT.dto.FindByIdResponseDto;
-
 import com.example.LOT.entity.Flight;
-import com.example.LOT.entity.User;
 import com.example.LOT.repository.FlightRepository;
-import org.modelmapper.ModelMapper;
+
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,7 +12,7 @@ import java.util.List;
 public class FlightService {
 
     private final FlightRepository flightRepository;
-    private final ModelMapper mapper = new ModelMapper(); //nieuzyte rzeczy, importy usuwamy
+
 
     public FlightService(FlightRepository flightRepository) {
         this.flightRepository = flightRepository;

@@ -18,17 +18,18 @@ public class Ticket {
     @JoinColumn(name = "flight_id")
     private Flight flight;
     private LocalDateTime dateOfPurchase;
-    private Double ticketPrice;
 
-    public Ticket(User user, Flight flight, LocalDateTime dateOfPurchase, Double ticketPrice) {
+
+    public Ticket(User user, Flight flight, LocalDateTime dateOfPurchase) {
         this.user = user;
         this.flight = flight;
         this.dateOfPurchase = dateOfPurchase;
-        this.ticketPrice = ticketPrice;
+
     }
 
     public Ticket() {
     }
+
 
     public User getUser() {
         return user;
@@ -54,11 +55,4 @@ public class Ticket {
         this.dateOfPurchase = dateOfPurchase;
     }
 
-    public Double getTicketPrice() {
-        return ticketPrice;
-    }
-
-    public void setTicketPrice(Double ticketPrice) {
-        this.ticketPrice = ticketPrice;
-    }
 }

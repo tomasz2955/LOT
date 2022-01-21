@@ -1,14 +1,11 @@
 package com.example.LOT.controllers;
 
 import com.example.LOT.dto.BuyingTicketDto;
-import com.example.LOT.dto.RegisterUserDto;
 import com.example.LOT.dto.UserTicketsDto;
 import com.example.LOT.entity.Ticket;
 import com.example.LOT.service.TicketService;
 import com.example.LOT.service.UserService;
 import org.springframework.web.bind.annotation.*;
-
-import javax.validation.Valid;
 import java.util.List;
 
 @CrossOrigin(origins = "http://localhost:3000")

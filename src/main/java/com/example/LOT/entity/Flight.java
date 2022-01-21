@@ -4,7 +4,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 
 @Entity
@@ -17,17 +17,29 @@ public class Flight {
     private String origin;
     private String destination;
     private String airline;
-    private LocalDate date;
+    private LocalDateTime departureDate;
+    private LocalDateTime dateOfArrival;
+    private Double price;
 
-    public Flight(String flightNumber, String origin, String destination, String airline, LocalDate date) {
+    public Flight(String flightNumber, String origin, String destination, String airline, LocalDateTime departureDate, LocalDateTime dateOfArrival) {
         this.flightNumber = flightNumber;
         this.origin = origin;
         this.destination = destination;
         this.airline = airline;
-        this.date = date;
+        this.departureDate = departureDate;
+        this.dateOfArrival = dateOfArrival;
+        this.price = 5000.00;
     }
 
     public Flight() {
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getFlightNumber() {
@@ -62,15 +74,30 @@ public class Flight {
         this.airline = airline;
     }
 
-
-
-    public LocalDate getDate() {
-        return date;
+    public LocalDateTime getDepartureDate() {
+        return departureDate;
     }
 
-    public void setDate(LocalDate date) {
-        this.date = date;
+    public void setDepartureDate(LocalDateTime departureDate) {
+        this.departureDate = departureDate;
     }
+
+    public LocalDateTime getDateOfArrival() {
+        return dateOfArrival;
+    }
+
+    public void setDateOfArrival(LocalDateTime dateOfArrival) {
+        this.dateOfArrival = dateOfArrival;
+    }
+
+    public Double getPrice() {
+        return price;
+    }
+
+    public void setPrice(Double price) {
+        this.price = price;
+    }
+
 }
 
 
