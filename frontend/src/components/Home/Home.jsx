@@ -11,13 +11,15 @@ import {DatePicker} from "@mui/lab";
 import Flights from "./Flights";
 import {useDispatch} from "react-redux";
 import {searchFlightClicked} from "../../store/flightActions";
+import axios from "../../axios-config";
+import {loginFailed, loginStart, loginSuccess} from "../../store/authActions";
 
 const Home = (props) => {
     //todo wybieranie kraju z dropdown
     //todo liczba pasazerow
     //todo w dwie strony
 
-    const cities = ['Wroclaw', 'Warszawa', 'Szczecin', 'Bytom', 'Karpacz']
+    const cities = ['Poland', 'Germany']
 
     const [filteredCities, setFilteredCities] = useState([])
     const [isOneWay, setIsOneWay] = useState(true)
@@ -88,13 +90,20 @@ const Home = (props) => {
                                 </LocalizationProvider>
                             </div> : <div  style={{display: "flex", justifyContent: "center", marginBottom: 10}}>
                                 <LocalizationProvider dateAdapter={AdapterDateFns}>
-                                    <DatePicker
-                                        label="From"
-                                        value={dateRange[0]}
-                                        onChange={(newValue) => {
-                                            setDateRange([newValue, null]);
+                                    <DateRangePicker
+                                        startText="From"
+                                        endText="To"
+                                        value={dateRange}
+                                        onChange={(dateRange) => {
+                                            setDateRange(dateRange)
                                         }}
-                                        renderInput={(params) => <TextField {...params} />}
+                                        renderInput={(startProps, endProps) => (
+                                            <React.Fragment>
+                                                <TextField {...startProps} />
+                                                <Box sx={{ mx: 2 }}> to </Box>
+                                                <TextField {...endProps} />
+                                            </React.Fragment>
+                                        )}
                                     />
                                 </LocalizationProvider>
                             </div>
@@ -103,11 +112,21 @@ const Home = (props) => {
 
                         <Button variant="contained"
                         onClick={() => {
-                            console.log(origin)
-                            console.log(destination)
-                            console.log(new Date(dateRange[0]).toISOString())
-                            console.log(dateRange[1] ? new Date(dateRange[1]).toISOString(): null)
-                            setFoundFlights(mockFlights.filter(flight => flight.origin === origin || flight.destination === destination))
+                            axios.post('/flights/search3', {
+                                origin: origin,
+                                destination: destination,
+                                departureDateStart: dateRange[0],
+                                departureDateEnd: dateRange[1],
+                                foo: dateRange[1],
+                            }).then(response => {
+                                setFoundFlights(response.data)
+                            })
+                                .catch((error) => {
+                                    console.log(error)
+                                    alert("Something went wrong")
+                                });
+
+
                             dispatch(searchFlightClicked({
                                 from: new Date(dateRange[0]).toISOString(),
                                 to: dateRange[1] ? new Date(dateRange[1]).toISOString(): null,

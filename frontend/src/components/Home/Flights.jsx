@@ -6,7 +6,7 @@ const Flights = (props) => {
     return (
       <>
           {
-              props.flights.map(
+              props.flights?.map(
                   (flight) => <Flight key={flight.id} flight={flight}/>
               )
           }

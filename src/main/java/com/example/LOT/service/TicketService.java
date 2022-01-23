@@ -35,7 +35,7 @@ public class TicketService {
 
     public void buyTicket(BuyingTicketDto buyingTicketDto) {
         User findUser = userRepository.findById(buyingTicketDto.getUserId()).orElseThrow(); //orElseThrow musi wszędzie rzucac jakis exception z message który mi cos powie na frontendzie
-        Flight findFlight = flightRepository.findById(buyingTicketDto.getFlightId()).orElseThrow();
+        Flight findFlight = flightRepository.findById(buyingTicketDto.getFlightId()).orElseThrow(); //to samo
         //podczas tworzenia encji flight powinienes ustawiac ilosc dostępnych biletów w locie. Podczas kupowania biletów powinienes
         //odejmowac tą ilość z lotu. Gdy lot nie ma juz biletów powinieneś rzucić exception z odpowiednim message
         ticketRepository.save(new Ticket(findUser, findFlight, LocalDateTime.now()));
@@ -43,12 +43,13 @@ public class TicketService {
 
     //usuwanie biletu na podstawie ID
     public void deleteById(Long id) {
-        Ticket findTicket = ticketRepository.findById(id).orElseThrow();
-        LocalDateTime from = findTicket.getFlight().getDepartureDate();
+        Ticket findTicket = ticketRepository.findById(id).orElseThrow(); //oresleThrow trzeba rzucic exception z sensownym komentarzem zeby frontend wiedzial co sie stalo
+        LocalDateTime from = findTicket.getFlight().getDepartureDate(); //ten opis zmiennej wiele nie mówi, to samo ponizej. Tą np nazwałbym flightDepartureDate
         LocalDateTime to = LocalDateTime.now();
         Duration duration = Duration.between(to, from);
-        if(duration.toHours() <=24) {
-            throw new RuntimeException("You can not return ticket");
+        if(duration.toHours() <=24) { // w kodzie mowi się o czyms takim jak magic number, to są takie numery które są bezposrednio uzyte w kodzie i nie mają żadnego opisu
+            //powinienes przypisac ją do zmiennej która będzie informująca: https://stackoverflow.com/questions/47882/what-is-a-magic-number-and-why-is-it-bad
+            throw new RuntimeException("You can not return ticket"); // wiadomosc dla kupującego musi cos mu mówić, nie mozesz zwrócić biletu jeżeli lot jest za mniej niz 24h
         } else {
             ticketRepository.deleteById(id);
         }

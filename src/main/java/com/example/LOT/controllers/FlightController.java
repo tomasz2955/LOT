@@ -24,19 +24,19 @@ public class FlightController {
     }
 
     //wyszukuje loty na podstawie Origin i Destination przy założeniu, że lot odbędzie się w bieżącym miesiącu
-    @PostMapping("/search1")
+    @PostMapping("/search1") //ten endpoint mysle ze mozemy wyrzucic
     public List<Flight> findByOriginAndDestination(@RequestBody OriginAndDestinationDto originAndDestinationDto) {
         return flightService.getFlightsByOriginAndDestination(originAndDestinationDto);
     }
 
     //wyszukuje loty na podstawie Origin i Destination na miesiąc do przodu od dziś
-    @PostMapping("/search2")
+    @PostMapping("/search2") //ten nazwalibysmy np search/month
     public List<Flight> findByOriginAndDestinationAndMonth(@RequestBody OriginAndDestinationDto originAndDestinationDto) {
         return flightService.getFlightsByOriginAndDestinationAndMonth(originAndDestinationDto);
     }
 
     //wyszukuje loty na podstawie Origin i Destination wg przedziału dat
-    @PostMapping("/search3")
+    @PostMapping("/search3") //a ten search/range
     public List<Flight> findByOriginAndDestinationAndDepartureDateBetween(@RequestBody OriginDestinationBetweenDateDto originDestinationBetweenDateDto) {
         return flightService.getFlightsByOriginAndDestinationBetweenDate(originDestinationBetweenDateDto);
     }

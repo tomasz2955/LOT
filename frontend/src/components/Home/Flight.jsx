@@ -18,12 +18,12 @@ const Flight = (props) => {
                         justifyContent: "space-between"}}>
                         <div>
                             <Typography style={{marginBottom: 10}}>
-                                {props.flight.date}
+                                Flight: {props.flight.airline} - {props.flight.flightNumber}
                             </Typography>
                             <Typography style={{display: 'flex'}}>
-                                <p style={{marginTop:0}}><strong>({props.flight.startHour})  </strong>{props.flight.origin}  </p>
+                                <p style={{marginTop:0}}><strong>({props.flight.dateOfArrival})  </strong>{props.flight.origin}  </p>
                                 <ArrowRightAltIcon />
-                                <p style={{marginTop:0}}> <strong>  ({props.flight.endHour})</strong>  {props.flight.destination}</p>
+                                <p style={{marginTop:0}}> <strong>  ({props.flight.departureDate})</strong>  {props.flight.destination}</p>
                             </Typography>
                         </div>
                         <div>
