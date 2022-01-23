@@ -46,8 +46,17 @@ public class LotApplication implements CommandLineRunner {
 
 		Flight flight1 = new Flight("WE34567", "Poland", "Germany", "Wizzair", LocalDateTime.now().plusHours(9), LocalDateTime.now().plusHours(13));
 		Flight flight2 = new Flight("XC12001", "Italy", "Poland", "Ryanair", LocalDateTime.now().plusHours(29), LocalDateTime.now().plusHours(79));
+		Flight flight3 = new Flight("XE12991", "Poland", "Germany", "Wizzair", LocalDateTime.now().plusHours(31), LocalDateTime.now().plusHours(81));
+		Flight flight4 = new Flight("XE12971", "Poland", "Germany", "Wizzair", LocalDateTime.now().plusMonths(3), LocalDateTime.now().plusMonths(3).plusHours(9));
+		Flight flight5 = new Flight("XE92971", "Poland", "Germany", "Ryanair", LocalDateTime.now().plusMonths(4), LocalDateTime.now().plusMonths(4).plusHours(9));
+
+
 		flightRepository.save(flight1);
 		flightRepository.save(flight2);
+		flightRepository.save(flight3);
+		flightRepository.save(flight4);
+		flightRepository.save(flight5);
+
 
 		Ticket ticket1 = new Ticket(user1, flight1, LocalDateTime.now());
 		Ticket ticket2 = new Ticket(user1, flight2, LocalDateTime.now());
