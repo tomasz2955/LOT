@@ -1,10 +1,11 @@
 package com.example.LOT.service;
 
-import com.example.LOT.dto.OriginAndDestinationDto;
-import com.example.LOT.dto.OriginDestinationBetweenDateDto;
+import com.example.LOT.dto.*;
 import com.example.LOT.entity.Flight;
+import com.example.LOT.entity.User;
 import com.example.LOT.repository.FlightRepository;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -16,6 +17,7 @@ import java.util.stream.Collectors;
 public class FlightService {
 
     private final FlightRepository flightRepository;
+    private final ModelMapper mapper = new ModelMapper();
 
 
     public FlightService(FlightRepository flightRepository) {
@@ -58,4 +60,11 @@ public class FlightService {
         }
         return flights;
     }
+
+    public List<String> listOfCountries() {
+        List<String> zzz = flightRepository.findAll().stream().map(m->m.getDestination()).distinct().collect(Collectors.toList());
+        return zzz;
+    }
+
+
 }

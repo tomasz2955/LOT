@@ -1,6 +1,7 @@
 package com.example.LOT.controllers;
 
 
+
 import com.example.LOT.dto.OriginAndDestinationDto;
 import com.example.LOT.dto.OriginDestinationBetweenDateDto;
 import com.example.LOT.entity.Flight;
@@ -40,4 +41,10 @@ public class FlightController {
     public List<Flight> findByOriginAndDestinationAndDepartureDateBetween(@RequestBody OriginDestinationBetweenDateDto originDestinationBetweenDateDto) {
         return flightService.getFlightsByOriginAndDestinationBetweenDate(originDestinationBetweenDateDto);
     }
+
+    @GetMapping("/search4")
+    public List<String> findCountries() {
+        return flightService.listOfCountries();
+    }
+
 }
