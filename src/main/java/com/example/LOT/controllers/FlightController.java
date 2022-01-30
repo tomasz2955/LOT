@@ -1,7 +1,6 @@
 package com.example.LOT.controllers;
 
 
-
 import com.example.LOT.dto.OriginAndDestinationDto;
 import com.example.LOT.dto.OriginDestinationBetweenDateDto;
 import com.example.LOT.entity.Flight;

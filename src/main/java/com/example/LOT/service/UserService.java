@@ -75,11 +75,10 @@ public class UserService {
         if(updateUserDto.getLastName() != null) {
             editedUser.setLastName(updateUserDto.getLastName());
         }
-        if(updateUserDto.getPhoneNumber() != null) { //brak walidacji numeru telefonu zezwala mi zapisać np &#^$@&#*$&@#$&#$&#(*$
+        if(updateUserDto.getPhoneNumber() != null) {
             editedUser.setPhoneNumber(updateUserDto.getPhoneNumber());
         }
-        if(updateUserDto.getPassword() != null) { //ogolnie dto nie jest zwalidowane i można podać wszystko co sie chce
-            //moge nawet podać haslo jako pusty string "" i będe miec haslo które nie zawiera zadengo znaku
+        if(updateUserDto.getPassword() != null) {
             editedUser.setPassword(updateUserDto.getPassword());
         }
         userRepository.save(editedUser);

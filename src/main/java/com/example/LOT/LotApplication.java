@@ -44,11 +44,11 @@ public class LotApplication implements CommandLineRunner {
 		userRepository.save(user1);
 		userRepository.save(user2);
 
-		Flight flight1 = new Flight("WE34567", "Poland", "Germany", "Wizzair", LocalDateTime.now().plusHours(9), LocalDateTime.now().plusHours(13));
-		Flight flight2 = new Flight("XC12001", "Italy", "Poland", "Ryanair", LocalDateTime.now().plusHours(29), LocalDateTime.now().plusHours(79));
-		Flight flight3 = new Flight("XE12991", "Poland", "Germany", "Wizzair", LocalDateTime.now().plusHours(31), LocalDateTime.now().plusHours(81));
-		Flight flight4 = new Flight("XE12971", "Poland", "Germany", "Wizzair", LocalDateTime.now().plusMonths(3), LocalDateTime.now().plusMonths(3).plusHours(9));
-		Flight flight5 = new Flight("XE92971", "Poland", "Germany", "Ryanair", LocalDateTime.now().plusMonths(4), LocalDateTime.now().plusMonths(4).plusHours(9));
+		Flight flight1 = new Flight("WE34567", "Poland", "Germany", "Wizzair", LocalDateTime.now().plusHours(9), LocalDateTime.now().plusHours(13), 5000.00, 10L);
+		Flight flight2 = new Flight("XC12001", "Italy", "Poland", "Ryanair", LocalDateTime.now().plusHours(29), LocalDateTime.now().plusHours(79), 5000.00, 10L);
+		Flight flight3 = new Flight("XE12991", "Poland", "Germany", "Wizzair", LocalDateTime.now().plusHours(31), LocalDateTime.now().plusHours(81), 5000.00, 10L);
+		Flight flight4 = new Flight("XE12971", "Poland", "Germany", "Wizzair", LocalDateTime.now().plusMonths(3), LocalDateTime.now().plusMonths(3).plusHours(9), 5000.00, 10L);
+		Flight flight5 = new Flight("XE92971", "Poland", "Germany", "Ryanair", LocalDateTime.now().plusMonths(4), LocalDateTime.now().plusMonths(4).plusHours(9), 5000.00, 10L);
 
 
 		flightRepository.save(flight1);

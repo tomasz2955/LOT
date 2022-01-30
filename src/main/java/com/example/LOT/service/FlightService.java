@@ -2,7 +2,6 @@ package com.example.LOT.service;
 
 import com.example.LOT.dto.*;
 import com.example.LOT.entity.Flight;
-import com.example.LOT.entity.User;
 import com.example.LOT.repository.FlightRepository;
 
 import org.modelmapper.ModelMapper;
@@ -41,29 +40,19 @@ public class FlightService {
     //wyszukuje loty na podstawie Origin i Destination na miesiąc do przodu od dziś
     public List<Flight> getFlightsByOriginAndDestinationAndMonth(OriginAndDestinationDto originAndDestinationDto) {
         LocalDateTime today = LocalDateTime.now();
-        LocalDateTime oneMonthFromNow = LocalDateTime.now().plusMonths(1); //warto przypisywac rzeczy do nazw, latwiej sie wtedy czyta kod gdzie jest to uzyte
-        List<Flight> flights = flightRepository.findByOriginAndDestinationAndDepartureDateBetween
+        LocalDateTime oneMonthFromNow = LocalDateTime.now().plusMonths(1);
+        return flightRepository.findByOriginAndDestinationAndDepartureDateBetween
                 (originAndDestinationDto.getOrigin(), originAndDestinationDto.getDestination(), today, oneMonthFromNow);
-        if(flights.isEmpty()) {
-            throw new RuntimeException("Flights not found"); //tutaj nie rzucalbym exceptiona, przekazalbym pustą listę. Tutaj akurat
-            //brak lotów nie jest błędem, to jest poprostu stan rzeczy także exceptiona nie rzucamy
-        }
-        return flights;
     }
 
     //wyszukuje loty na podstawie Origin i Destination wg przedziału dat
     public List<Flight> getFlightsByOriginAndDestinationBetweenDate(OriginDestinationBetweenDateDto originDestinationBetweenDateDto) {
-        List<Flight> flights = flightRepository.findByOriginAndDestinationAndDepartureDateBetween
+        return flightRepository.findByOriginAndDestinationAndDepartureDateBetween
                 (originDestinationBetweenDateDto.getOrigin(), originDestinationBetweenDateDto.getDestination(), originDestinationBetweenDateDto.getDepartureDateStart(),originDestinationBetweenDateDto.getDepartureDateEnd());
-        if(flights.isEmpty()) {
-            throw new RuntimeException("Flights not found"); //jak wyzej
-        }
-        return flights;
     }
 
     public List<String> listOfCountries() {
-        List<String> zzz = flightRepository.findAll().stream().map(m->m.getDestination()).distinct().collect(Collectors.toList());
-        return zzz;
+        return flightRepository.findAll().stream().map(Flight::getDestination).distinct().collect(Collectors.toList());
     }
 
 

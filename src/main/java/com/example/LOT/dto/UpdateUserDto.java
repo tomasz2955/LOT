@@ -1,10 +1,19 @@
 package com.example.LOT.dto;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
+
 public class UpdateUserDto {
 
+    @NotEmpty
     private String name;
+    @NotEmpty
     private String lastName;
+    @NotEmpty
+    @Size(min = 9, max = 9)
     private String phoneNumber;
+    @NotEmpty
+    @Size(min = 1, max = 200, message = "Password must be between 1 and 200 characters")
     private String password;
 
     public UpdateUserDto(String name, String lastName, String phoneNumber, String password) {

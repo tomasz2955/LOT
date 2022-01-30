@@ -20,16 +20,17 @@ public class Flight {
     private LocalDateTime departureDate;
     private LocalDateTime dateOfArrival;
     private Double price;
+    private Long availableTickets;
 
-    public Flight(String flightNumber, String origin, String destination, String airline, LocalDateTime departureDate, LocalDateTime dateOfArrival) {
+    public Flight(String flightNumber, String origin, String destination, String airline, LocalDateTime departureDate, LocalDateTime dateOfArrival, Double price, Long availableTickets) {
         this.flightNumber = flightNumber;
         this.origin = origin;
         this.destination = destination;
         this.airline = airline;
         this.departureDate = departureDate;
         this.dateOfArrival = dateOfArrival;
-        this.price = 5000.00; //proponuje wrzucic cene do konstruktora zeby miec mozliwosc ustawiania jej. Potem moze zrobimy nawet endpoint dla adminów
-        //ktorzy z poziomu przeglądarki będą w stanie dodać swoje loty
+        this.price = price;
+        this.availableTickets = availableTickets;
     }
 
     public Flight() {
@@ -99,6 +100,13 @@ public class Flight {
         this.price = price;
     }
 
+    public Long getAvailableTickets() {
+        return availableTickets;
+    }
+
+    public void setAvailableTickets(Long availableTickets) {
+        this.availableTickets = availableTickets;
+    }
 }
 
 

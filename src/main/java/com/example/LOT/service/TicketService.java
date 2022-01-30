@@ -36,9 +36,22 @@ public class TicketService {
     public void buyTicket(BuyingTicketDto buyingTicketDto) {
         User findUser = userRepository.findById(buyingTicketDto.getUserId()).orElseThrow(); //orElseThrow musi wszędzie rzucac jakis exception z message który mi cos powie na frontendzie
         Flight findFlight = flightRepository.findById(buyingTicketDto.getFlightId()).orElseThrow(); //to samo
+        Long ticketsLeft = findFlight.getAvailableTickets();
+        if(ticketsLeft>= buyingTicketDto.getNumberOfTickets()) {
+            for(int i=1;i<=buyingTicketDto.getNumberOfTickets();i++) {
+                ticketRepository.save(new Ticket(findUser, findFlight, LocalDateTime.now()));
+            }
+            findFlight.setAvailableTickets(ticketsLeft- buyingTicketDto.getNumberOfTickets());
+            flightRepository.save(findFlight);
+        } else {
+            throw new RuntimeException("Not enough tickets");
+        }
+
+
         //podczas tworzenia encji flight powinienes ustawiac ilosc dostępnych biletów w locie. Podczas kupowania biletów powinienes
         //odejmowac tą ilość z lotu. Gdy lot nie ma juz biletów powinieneś rzucić exception z odpowiednim message
-        ticketRepository.save(new Ticket(findUser, findFlight, LocalDateTime.now()));
+
+
     }
 
     //usuwanie biletu na podstawie ID
