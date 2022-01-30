@@ -41,7 +41,7 @@ public class FlightController {
         return flightService.getFlightsByOriginAndDestinationBetweenDate(originDestinationBetweenDateDto);
     }
 
-    @GetMapping("/search4")
+    @GetMapping("/search4") //no chyba zartujesz z ta nazwą endpointu :D
     public List<String> findCountries() {
         return flightService.listOfCountries();
     }

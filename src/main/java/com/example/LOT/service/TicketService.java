@@ -40,6 +40,12 @@ public class TicketService {
         if(ticketsLeft>= buyingTicketDto.getNumberOfTickets()) {
             for(int i=1;i<=buyingTicketDto.getNumberOfTickets();i++) {
                 ticketRepository.save(new Ticket(findUser, findFlight, LocalDateTime.now()));
+                //myslalem ze bedziemy zapisywac jeden ticket ktory zawieralby informacje o ilosci sztuk
+                //ale jak tak zrobiles to sensownie byloby jakbym przekazywal ci dane osobowe poszczegolnych podrozujacych. Wtedy
+                //kazdy ticket mialby informacje o osobie ktora leci zamiast duplikowac info o kupującym na kazdym bilecie
+                //Z buyingTicketDto wylatuje number of tickets, zamiast tego przekazemy listę pasażerow
+                //Zrobisz encje pasazera i bedziesz tworzyc ticket per osoba
+
             }
             findFlight.setAvailableTickets(ticketsLeft- buyingTicketDto.getNumberOfTickets());
             flightRepository.save(findFlight);
