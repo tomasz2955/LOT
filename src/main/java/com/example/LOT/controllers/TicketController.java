@@ -1,6 +1,7 @@
 package com.example.LOT.controllers;
 
 import com.example.LOT.dto.BuyingTicketDto;
+import com.example.LOT.dto.ReturnTicketDto;
 import com.example.LOT.dto.UserTicketsDto;
 import com.example.LOT.entity.Ticket;
 import com.example.LOT.service.TicketService;
@@ -31,14 +32,14 @@ public class TicketController {
         return userService.findTicketById(id);
     }
 
-    @PostMapping("/buy") //chyba mówiliśmy o kupowaniu sztuk biletów także gdzieś te info trzebaby tu przekazać
+    @PostMapping("/buy")
     public void buyTicket(@RequestBody BuyingTicketDto buyingTicketDto) {
         ticketService.buyTicket(buyingTicketDto);
     }
 
-    @DeleteMapping("/delete/{id}")
-    public void deleteTicketById(@PathVariable Long id) {
-        ticketService.deleteById(id);
+    @DeleteMapping("/delete")
+    public void deleteTicketById(@RequestBody ReturnTicketDto returnTicketDto) {
+        ticketService.deleteTicket(returnTicketDto);
     }
 
 }

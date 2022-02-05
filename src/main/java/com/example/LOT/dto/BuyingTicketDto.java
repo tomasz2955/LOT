@@ -1,14 +1,19 @@
 package com.example.LOT.dto;
 
+import com.example.LOT.entity.Passenger;
+import com.example.LOT.entity.Ticket;
+
+import java.util.List;
+
 public class BuyingTicketDto {
     private Long userId;
     private Long flightId;
-    private Long numberOfTickets;
+    private List<Passenger> passengers;
 
-    public BuyingTicketDto(Long userId, Long flightId, Long numberOfTickets) {
+    public BuyingTicketDto(Long userId, Long flightId, List<Passenger> passengers) {
         this.userId = userId;
         this.flightId = flightId;
-        this.numberOfTickets = numberOfTickets;
+        this.passengers = passengers;
     }
 
     public Long getUserId() {
@@ -27,12 +32,12 @@ public class BuyingTicketDto {
         this.flightId = flightId;
     }
 
-    public Long getNumberOfTickets() {
-        return numberOfTickets;
+    public List<Passenger> getPassengers() {
+        return passengers;
     }
 
-    public void setNumberOfTickets(Long numberOfTickets) {
-        this.numberOfTickets = numberOfTickets;
+    public void setPassengers(List<Passenger> passengers) {
+        this.passengers = passengers;
     }
 
     public BuyingTicketDto() {

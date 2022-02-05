@@ -10,33 +10,49 @@ public class Ticket {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
-    @JsonBackReference
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
+    private Long userId;
+    @OneToOne(cascade = {CascadeType.ALL})
+    @JoinColumn(name = "passenger_id")
+    private Passenger passenger;
     @ManyToOne
     @JoinColumn(name = "flight_id")
     private Flight flight;
     private LocalDateTime dateOfPurchase;
+    private Long seatNumber;
 
-
-    public Ticket(User user, Flight flight, LocalDateTime dateOfPurchase) {
-        this.user = user;
+    public Ticket(Long userId, Passenger passenger, Flight flight, LocalDateTime dateOfPurchase, Long seatNumber) {
+        this.userId = userId;
+        this.passenger = passenger;
         this.flight = flight;
         this.dateOfPurchase = dateOfPurchase;
-
+        this.seatNumber = seatNumber;
     }
 
     public Ticket() {
     }
 
-
-    public User getUser() {
-        return user;
+    public Long getId() {
+        return id;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
+
+    public Passenger getPassenger() {
+        return passenger;
+    }
+
+    public void setPassenger(Passenger passenger) {
+        this.passenger = passenger;
     }
 
     public Flight getFlight() {
@@ -55,4 +71,11 @@ public class Ticket {
         this.dateOfPurchase = dateOfPurchase;
     }
 
+    public Long getSeatNumber() {
+        return seatNumber;
+    }
+
+    public void setSeatNumber(Long seatNumber) {
+        this.seatNumber = seatNumber;
+    }
 }

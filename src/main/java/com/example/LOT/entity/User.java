@@ -16,7 +16,7 @@ public class User {
     private String phoneNumber;
     private String password;
     @JsonManagedReference
-    @OneToMany(mappedBy="user")
+    @OneToMany(mappedBy="passenger")
     private List<Ticket> tickets;
 
 

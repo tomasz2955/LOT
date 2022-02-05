@@ -1,14 +1,16 @@
 package com.example.LOT.service;
 
 import com.example.LOT.dto.BuyingTicketDto;
+import com.example.LOT.dto.ReturnTicketDto;
 import com.example.LOT.entity.Flight;
 import com.example.LOT.entity.Ticket;
 import com.example.LOT.entity.User;
 import com.example.LOT.repository.FlightRepository;
+import com.example.LOT.repository.PassengerRepository;
 import com.example.LOT.repository.TicketRepository;
 import com.example.LOT.repository.UserRepository;
-import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -16,61 +18,57 @@ import java.util.List;
 
 @Service
 public class TicketService {
-
+    public static final int MAX_HOURS_BEFORE_DEPARTURE = 24;
 
     private final TicketRepository ticketRepository;
     private final UserRepository userRepository;
     private final FlightRepository flightRepository;
+    private final PassengerRepository passengerRepository;
 
-
-    public TicketService(TicketRepository ticketRepository, UserRepository userRepository, FlightRepository flightRepository) {
+    public TicketService(TicketRepository ticketRepository, UserRepository userRepository, FlightRepository flightRepository, PassengerRepository passengerRepository) {
         this.ticketRepository = ticketRepository;
         this.userRepository = userRepository;
         this.flightRepository = flightRepository;
+        this.passengerRepository = passengerRepository;
     }
+
 
     public List<Ticket> getTickets() {
         return ticketRepository.findAll();
     }
 
     public void buyTicket(BuyingTicketDto buyingTicketDto) {
-        User findUser = userRepository.findById(buyingTicketDto.getUserId()).orElseThrow(); //orElseThrow musi wszędzie rzucac jakis exception z message który mi cos powie na frontendzie
-        Flight findFlight = flightRepository.findById(buyingTicketDto.getFlightId()).orElseThrow(); //to samo
+        User findUser = userRepository.findById(buyingTicketDto.getUserId()).orElseThrow();
+        Flight findFlight = flightRepository.findById(buyingTicketDto.getFlightId()).orElseThrow();
         Long ticketsLeft = findFlight.getAvailableTickets();
-        if(ticketsLeft>= buyingTicketDto.getNumberOfTickets()) {
-            for(int i=1;i<=buyingTicketDto.getNumberOfTickets();i++) {
-                ticketRepository.save(new Ticket(findUser, findFlight, LocalDateTime.now()));
-                //myslalem ze bedziemy zapisywac jeden ticket ktory zawieralby informacje o ilosci sztuk
-                //ale jak tak zrobiles to sensownie byloby jakbym przekazywal ci dane osobowe poszczegolnych podrozujacych. Wtedy
-                //kazdy ticket mialby informacje o osobie ktora leci zamiast duplikowac info o kupującym na kazdym bilecie
-                //Z buyingTicketDto wylatuje number of tickets, zamiast tego przekazemy listę pasażerow
-                //Zrobisz encje pasazera i bedziesz tworzyc ticket per osoba
-
+        if (ticketsLeft >= buyingTicketDto.getPassengers().size()) {
+            for (int i = 0; i < buyingTicketDto.getPassengers().size(); i++) {
+                ticketRepository.save(new Ticket(buyingTicketDto.getUserId(), buyingTicketDto.getPassengers().get(i), findFlight, LocalDateTime.now(), i + 1L));
             }
-            findFlight.setAvailableTickets(ticketsLeft- buyingTicketDto.getNumberOfTickets());
+            findFlight.setAvailableTickets(ticketsLeft - buyingTicketDto.getPassengers().size());
             flightRepository.save(findFlight);
         } else {
             throw new RuntimeException("Not enough tickets");
         }
-
-
-        //podczas tworzenia encji flight powinienes ustawiac ilosc dostępnych biletów w locie. Podczas kupowania biletów powinienes
-        //odejmowac tą ilość z lotu. Gdy lot nie ma juz biletów powinieneś rzucić exception z odpowiednim message
-
-
     }
 
-    //usuwanie biletu na podstawie ID
-    public void deleteById(Long id) {
-        Ticket findTicket = ticketRepository.findById(id).orElseThrow(); //oresleThrow trzeba rzucic exception z sensownym komentarzem zeby frontend wiedzial co sie stalo
-        LocalDateTime from = findTicket.getFlight().getDepartureDate(); //ten opis zmiennej wiele nie mówi, to samo ponizej. Tą np nazwałbym flightDepartureDate
-        LocalDateTime to = LocalDateTime.now();
-        Duration duration = Duration.between(to, from);
-        if(duration.toHours() <=24) { // w kodzie mowi się o czyms takim jak magic number, to są takie numery które są bezposrednio uzyte w kodzie i nie mają żadnego opisu
-            //powinienes przypisac ją do zmiennej która będzie informująca: https://stackoverflow.com/questions/47882/what-is-a-magic-number-and-why-is-it-bad
-            throw new RuntimeException("You can not return ticket"); // wiadomosc dla kupującego musi cos mu mówić, nie mozesz zwrócić biletu jeżeli lot jest za mniej niz 24h
+
+    @Transactional
+    public void deleteTicket(ReturnTicketDto returnTicketDto) {
+        Ticket findTicket = ticketRepository.findById(returnTicketDto.getTicketId()).orElseThrow();
+        if (returnTicketDto.getPassengerId().equals(findTicket.getPassenger().getId())) {
+            LocalDateTime flightDepartureDate = findTicket.getFlight().getDepartureDate();
+            LocalDateTime currentTime = LocalDateTime.now();
+            Duration duration = Duration.between(currentTime, flightDepartureDate);
+            if(duration.toHours() <=MAX_HOURS_BEFORE_DEPARTURE) {
+                throw new RuntimeException("Ticket cannot be returned, departure time is less than 24 hours");
+            } else {
+                findTicket.getFlight().setAvailableTickets(findTicket.getFlight().getAvailableTickets()+1);
+                ticketRepository.deleteById(returnTicketDto.getTicketId());
+
+            }
         } else {
-            ticketRepository.deleteById(id);
+            throw new RuntimeException("There is no ticket in the name of this passenger");
         }
     }
 }
