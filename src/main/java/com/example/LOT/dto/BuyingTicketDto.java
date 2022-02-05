@@ -6,9 +6,9 @@ import com.example.LOT.entity.Ticket;
 import java.util.List;
 
 public class BuyingTicketDto {
-    private Long userId;
-    private Long flightId;
-    private List<Passenger> passengers;
+    private Long userId; //moge przekazac nulla
+    private Long flightId; //moge przekazac nulla
+    private List<Passenger> passengers; //moge przekazac nulla lub pustą listę pasażerów - to dopiero zrobiłoby psikusa logice
 
     public BuyingTicketDto(Long userId, Long flightId, List<Passenger> passengers) {
         this.userId = userId;

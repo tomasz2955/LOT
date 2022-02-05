@@ -31,17 +31,25 @@ public class FlightController {
 
     //wyszukuje loty na podstawie Origin i Destination na miesiąc do przodu od dziś
     @PostMapping("/search2") //ten nazwalibysmy np search/month
+    //no chyba zartujesz z ta nazwą endpointu :D
+    //no chyba zartujesz z ta nazwą endpointu :D
     public List<Flight> findByOriginAndDestinationAndMonth(@RequestBody OriginAndDestinationDto originAndDestinationDto) {
         return flightService.getFlightsByOriginAndDestinationAndMonth(originAndDestinationDto);
     }
 
     //wyszukuje loty na podstawie Origin i Destination wg przedziału dat
     @PostMapping("/search3") //a ten search/range
+    //no chyba zartujesz z ta nazwą endpointu :D
+    //no chyba zartujesz z ta nazwą endpointu :D
+    //no chyba zartujesz z ta nazwą endpointu :D
     public List<Flight> findByOriginAndDestinationAndDepartureDateBetween(@RequestBody OriginDestinationBetweenDateDto originDestinationBetweenDateDto) {
         return flightService.getFlightsByOriginAndDestinationBetweenDate(originDestinationBetweenDateDto);
     }
 
     @GetMapping("/search4") //no chyba zartujesz z ta nazwą endpointu :D
+    //no chyba zartujesz z ta nazwą endpointu :D
+    //no chyba zartujesz z ta nazwą endpointu :D
+    //no chyba zartujesz z ta nazwą endpointu :D
     public List<String> findCountries() {
         return flightService.listOfCountries();
     }

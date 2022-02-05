@@ -23,7 +23,7 @@ public class TicketService {
     private final TicketRepository ticketRepository;
     private final UserRepository userRepository;
     private final FlightRepository flightRepository;
-    private final PassengerRepository passengerRepository;
+    private final PassengerRepository passengerRepository; // coś tu się świeci jak reflektor
 
     public TicketService(TicketRepository ticketRepository, UserRepository userRepository, FlightRepository flightRepository, PassengerRepository passengerRepository) {
         this.ticketRepository = ticketRepository;
@@ -38,24 +38,29 @@ public class TicketService {
     }
 
     public void buyTicket(BuyingTicketDto buyingTicketDto) {
-        User findUser = userRepository.findById(buyingTicketDto.getUserId()).orElseThrow();
-        Flight findFlight = flightRepository.findById(buyingTicketDto.getFlightId()).orElseThrow();
-        Long ticketsLeft = findFlight.getAvailableTickets();
-        if (ticketsLeft >= buyingTicketDto.getPassengers().size()) {
+        User findUser = userRepository.findById(buyingTicketDto.getUserId()).orElseThrow(); //chyba nieuzwane, bardzo nie łądnie
+        Flight findFlight = flightRepository.findById(buyingTicketDto.getFlightId()).orElseThrow(); //nazwalbym property po prostu flight
+        Long ticketsLeft = findFlight.getAvailableTickets(); //nie ma sensu przypisywac property to property, uzyj getAvailableTickets bezposrednio w pętli
+        if (ticketsLeft >= buyingTicketDto.getPassengers().size()) { //obecnie mogę przekazać pustą listę pasażerów, wtedy kod sie wykona poprawnie ale zaden ticket nie powstanie
             for (int i = 0; i < buyingTicketDto.getPassengers().size(); i++) {
+                //przy danych pasazera powinna byc przekazywana informacja o wybranym miejscu siedzącym zamiast przydzielać je losowo jak jest teraz
+                //wychodziloby na to że Flight powinien mieć listę encji Seat - siedzenie zawierałoby swój id, nazwę miejsca (C9, D1 itp) i id pasażera
+                // podczas dodawania pasażera trzebaby sprawdzić czy to miejsce nie jest przypadkiem już zajęte
+                // czy jest zajęte będziemy wiedzieli po tym czy id pasażera jest nullem czy nie
+                // wtedy możemy usunąć pole available tickets, żeby wiedzieć czy jeszcze są bilety będziemy musieli iterować się przez listę seats i patrzeć czy są wolne
                 ticketRepository.save(new Ticket(buyingTicketDto.getUserId(), buyingTicketDto.getPassengers().get(i), findFlight, LocalDateTime.now(), i + 1L));
             }
             findFlight.setAvailableTickets(ticketsLeft - buyingTicketDto.getPassengers().size());
             flightRepository.save(findFlight);
         } else {
-            throw new RuntimeException("Not enough tickets");
+            throw new RuntimeException("Not enough tickets"); //leniwcu, mialeś robić exceptiony dla danych przypadków
         }
     }
 
 
     @Transactional
     public void deleteTicket(ReturnTicketDto returnTicketDto) {
-        Ticket findTicket = ticketRepository.findById(returnTicketDto.getTicketId()).orElseThrow();
+        Ticket findTicket = ticketRepository.findById(returnTicketDto.getTicketId()).orElseThrow(); //orelsetrhow bez exceptiona, nie ładnie
         if (returnTicketDto.getPassengerId().equals(findTicket.getPassenger().getId())) {
             LocalDateTime flightDepartureDate = findTicket.getFlight().getDepartureDate();
             LocalDateTime currentTime = LocalDateTime.now();
@@ -68,7 +73,7 @@ public class TicketService {
 
             }
         } else {
-            throw new RuntimeException("There is no ticket in the name of this passenger");
+            throw new RuntimeException("There is no ticket in the name of this passenger"); //leniwcu, mialeś robić exceptiony dla danych przypadków
         }
     }
 }

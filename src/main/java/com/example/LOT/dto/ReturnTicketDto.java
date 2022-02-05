@@ -1,8 +1,8 @@
 package com.example.LOT.dto;
 
 public class ReturnTicketDto {
-    private Long ticketId;
-    private Long passengerId;
+    private Long ticketId; // moge przekazać nulla
+    private Long passengerId; //moge przekazać nulla
 
     public ReturnTicketDto() {
     }
