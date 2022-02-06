@@ -14,13 +14,13 @@ public class Ticket {
     @OneToOne(cascade = {CascadeType.ALL})
     @JoinColumn(name = "passenger_id")
     private Passenger passenger;
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.ALL})
     @JoinColumn(name = "flight_id")
     private Flight flight;
     private LocalDateTime dateOfPurchase;
-    private Long seatNumber;
+    private String seatNumber;
 
-    public Ticket(Long userId, Passenger passenger, Flight flight, LocalDateTime dateOfPurchase, Long seatNumber) {
+    public Ticket(Long userId, Passenger passenger, Flight flight, LocalDateTime dateOfPurchase, String seatNumber) {
         this.userId = userId;
         this.passenger = passenger;
         this.flight = flight;
@@ -71,11 +71,11 @@ public class Ticket {
         this.dateOfPurchase = dateOfPurchase;
     }
 
-    public Long getSeatNumber() {
+    public String getSeatNumber() {
         return seatNumber;
     }
 
-    public void setSeatNumber(Long seatNumber) {
+    public void setSeatNumber(String seatNumber) {
         this.seatNumber = seatNumber;
     }
 }

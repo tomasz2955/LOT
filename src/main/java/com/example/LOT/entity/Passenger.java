@@ -19,15 +19,17 @@ public class Passenger {
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate dateOfBirth;
+    private String seatNumber;
     private boolean isUser;
 
     public Passenger() {
     }
 
-    public Passenger(String name, String lastName, LocalDate dateOfBirth, boolean isUser) {
+    public Passenger(String name, String lastName, LocalDate dateOfBirth, String seatNumber, boolean isUser) {
         this.name = name;
         this.lastName = lastName;
         this.dateOfBirth = dateOfBirth;
+        this.seatNumber = seatNumber;
         this.isUser = isUser;
     }
 
@@ -61,6 +63,14 @@ public class Passenger {
 
     public void setDateOfBirth(LocalDate dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
+    }
+
+    public String getSeatNumber() {
+        return seatNumber;
+    }
+
+    public void setSeatNumber(String seatNumber) {
+        this.seatNumber = seatNumber;
     }
 
     public boolean isUser() {

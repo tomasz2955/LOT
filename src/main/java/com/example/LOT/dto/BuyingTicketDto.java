@@ -1,7 +1,7 @@
 package com.example.LOT.dto;
 
 import com.example.LOT.entity.Passenger;
-import com.example.LOT.entity.Ticket;
+
 
 import java.util.List;
 

@@ -1,5 +1,6 @@
 package com.example.LOT.service;
 
+import com.example.LOT.UserNotFoundException;
 import com.example.LOT.dto.BuyingTicketDto;
 import com.example.LOT.dto.ReturnTicketDto;
 import com.example.LOT.entity.Flight;
@@ -23,13 +24,11 @@ public class TicketService {
     private final TicketRepository ticketRepository;
     private final UserRepository userRepository;
     private final FlightRepository flightRepository;
-    private final PassengerRepository passengerRepository; // coś tu się świeci jak reflektor
 
-    public TicketService(TicketRepository ticketRepository, UserRepository userRepository, FlightRepository flightRepository, PassengerRepository passengerRepository) {
+    public TicketService(TicketRepository ticketRepository, UserRepository userRepository, FlightRepository flightRepository) {
         this.ticketRepository = ticketRepository;
         this.userRepository = userRepository;
         this.flightRepository = flightRepository;
-        this.passengerRepository = passengerRepository;
     }
 
 
@@ -37,30 +36,36 @@ public class TicketService {
         return ticketRepository.findAll();
     }
 
+
+    @Transactional
     public void buyTicket(BuyingTicketDto buyingTicketDto) {
-        User findUser = userRepository.findById(buyingTicketDto.getUserId()).orElseThrow(); //chyba nieuzwane, bardzo nie łądnie
-        Flight findFlight = flightRepository.findById(buyingTicketDto.getFlightId()).orElseThrow(); //nazwalbym property po prostu flight
-        Long ticketsLeft = findFlight.getAvailableTickets(); //nie ma sensu przypisywac property to property, uzyj getAvailableTickets bezposrednio w pętli
-        if (ticketsLeft >= buyingTicketDto.getPassengers().size()) { //obecnie mogę przekazać pustą listę pasażerów, wtedy kod sie wykona poprawnie ale zaden ticket nie powstanie
+        User findUser = userRepository.findById(buyingTicketDto.getUserId()).orElseThrow(UserNotFoundException::new);
+        Flight flight = flightRepository.findById(buyingTicketDto.getFlightId()).orElseThrow();
+
+        if (flight.getSeats().size() >= buyingTicketDto.getPassengers().size()) {
             for (int i = 0; i < buyingTicketDto.getPassengers().size(); i++) {
-                //przy danych pasazera powinna byc przekazywana informacja o wybranym miejscu siedzącym zamiast przydzielać je losowo jak jest teraz
-                //wychodziloby na to że Flight powinien mieć listę encji Seat - siedzenie zawierałoby swój id, nazwę miejsca (C9, D1 itp) i id pasażera
-                // podczas dodawania pasażera trzebaby sprawdzić czy to miejsce nie jest przypadkiem już zajęte
-                // czy jest zajęte będziemy wiedzieli po tym czy id pasażera jest nullem czy nie
-                // wtedy możemy usunąć pole available tickets, żeby wiedzieć czy jeszcze są bilety będziemy musieli iterować się przez listę seats i patrzeć czy są wolne
-                ticketRepository.save(new Ticket(buyingTicketDto.getUserId(), buyingTicketDto.getPassengers().get(i), findFlight, LocalDateTime.now(), i + 1L));
+                if (!flight.isSeatTaken(buyingTicketDto.getPassengers().get(i).getSeatNumber())) {
+                    ticketRepository.save(new Ticket(buyingTicketDto.getUserId(), buyingTicketDto.getPassengers().get(i), flight, LocalDateTime.now(), buyingTicketDto.getPassengers().get(i).getSeatNumber()));
+
+                    flight.setSeatBusy(buyingTicketDto.getPassengers().get(i).getSeatNumber(), buyingTicketDto.getPassengers().get(i).getId());
+
+                }
+
             }
-            findFlight.setAvailableTickets(ticketsLeft - buyingTicketDto.getPassengers().size());
-            flightRepository.save(findFlight);
-        } else {
-            throw new RuntimeException("Not enough tickets"); //leniwcu, mialeś robić exceptiony dla danych przypadków
+
+        }  else {
+            throw new RuntimeException("Not enough tickets");
         }
+
     }
 
 
+
+    /*
+
     @Transactional
     public void deleteTicket(ReturnTicketDto returnTicketDto) {
-        Ticket findTicket = ticketRepository.findById(returnTicketDto.getTicketId()).orElseThrow(); //orelsetrhow bez exceptiona, nie ładnie
+        Ticket findTicket = ticketRepository.findById(returnTicketDto.getTicketId()).orElseThrow(UserNotFoundException::new); //orelsetrhow bez exceptiona, nie ładnie
         if (returnTicketDto.getPassengerId().equals(findTicket.getPassenger().getId())) {
             LocalDateTime flightDepartureDate = findTicket.getFlight().getDepartureDate();
             LocalDateTime currentTime = LocalDateTime.now();
@@ -68,12 +73,15 @@ public class TicketService {
             if(duration.toHours() <=MAX_HOURS_BEFORE_DEPARTURE) {
                 throw new RuntimeException("Ticket cannot be returned, departure time is less than 24 hours");
             } else {
-                findTicket.getFlight().setAvailableTickets(findTicket.getFlight().getAvailableTickets()+1);
+                findTicket.getFlight().setAvailableSeats(findTicket.getFlight().getAvailableSeats()+1);
                 ticketRepository.deleteById(returnTicketDto.getTicketId());
 
             }
         } else {
-            throw new RuntimeException("There is no ticket in the name of this passenger"); //leniwcu, mialeś robić exceptiony dla danych przypadków
+            throw new UserNotFoundException(); //leniwcu, mialeś robić exceptiony dla danych przypadków
         }
     }
+
+     */
+
 }

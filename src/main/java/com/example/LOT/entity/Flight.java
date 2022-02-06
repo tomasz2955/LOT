@@ -1,10 +1,11 @@
 package com.example.LOT.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
+import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Objects;
 
 
 @Entity
@@ -20,9 +21,10 @@ public class Flight {
     private LocalDateTime departureDate;
     private LocalDateTime dateOfArrival;
     private Double price;
-    private Long availableTickets;
+    @OneToMany(cascade = {CascadeType.ALL})
+    private List<Seat> seats;
 
-    public Flight(String flightNumber, String origin, String destination, String airline, LocalDateTime departureDate, LocalDateTime dateOfArrival, Double price, Long availableTickets) {
+    public Flight(String flightNumber, String origin, String destination, String airline, LocalDateTime departureDate, LocalDateTime dateOfArrival, Double price, List<Seat> seats) {
         this.flightNumber = flightNumber;
         this.origin = origin;
         this.destination = destination;
@@ -30,11 +32,29 @@ public class Flight {
         this.departureDate = departureDate;
         this.dateOfArrival = dateOfArrival;
         this.price = price;
-        this.availableTickets = availableTickets;
+        this.seats = seats;
     }
 
     public Flight() {
     }
+
+    public boolean isSeatTaken(String seatNumber) {
+        for (Seat seat : seats) {
+            return !Objects.equals(seat.getSeatNumber(), seatNumber) || seat.getPassengerId() != null;
+        }
+        return true;
+    }
+
+    public void setSeatBusy(String seatNumber, Long passengerId) {
+        for (Seat seat : seats) {
+            if (Objects.equals(seat.getSeatNumber(), seatNumber)) {
+                if (seat.getPassengerId() == null) {
+                    seat.setPassengerId(passengerId);
+                }
+            }
+        }
+    }
+
 
     public Long getId() {
         return id;
@@ -100,12 +120,12 @@ public class Flight {
         this.price = price;
     }
 
-    public Long getAvailableTickets() {
-        return availableTickets;
+    public List<Seat> getSeats() {
+        return seats;
     }
 
-    public void setAvailableTickets(Long availableTickets) {
-        this.availableTickets = availableTickets;
+    public void setSeats(List<Seat> seats) {
+        this.seats = seats;
     }
 }
 

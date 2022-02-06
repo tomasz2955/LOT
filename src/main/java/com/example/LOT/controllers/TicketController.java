@@ -39,7 +39,7 @@ public class TicketController {
 
     @DeleteMapping("/delete")
     public void deleteTicketById(@RequestBody ReturnTicketDto returnTicketDto) {
-        ticketService.deleteTicket(returnTicketDto);
+     //   ticketService.deleteTicket(returnTicketDto);
     }
 
 }
