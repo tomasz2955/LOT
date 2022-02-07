@@ -1,8 +1,12 @@
 package com.example.LOT.dto;
 
+import javax.validation.constraints.NotEmpty;
+
 public class ReturnTicketDto {
-    private Long ticketId; // moge przekazać nulla
-    private Long passengerId; //moge przekazać nulla
+    @NotEmpty
+    private Long ticketId;
+    @NotEmpty
+    private Long passengerId;
 
     public ReturnTicketDto() {
     }

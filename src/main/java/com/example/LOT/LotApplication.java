@@ -51,7 +51,7 @@ public class LotApplication implements CommandLineRunner {
 
 
 		Flight flight1 = new Flight("WE34567", "Poland", "Germany", "Wizzair", LocalDateTime.now().plusHours(9), LocalDateTime.now().plusHours(13), 5000.00, new ArrayList<>(List.of(new Seat("1A"), new Seat("1B"),new Seat("1C"), new Seat("1D"))));
-		Flight flight2 = new Flight("XC12001", "Italy", "Poland", "Ryanair", LocalDateTime.now().plusHours(29), LocalDateTime.now().plusHours(79), 5000.00, new ArrayList<>());
+		Flight flight2 = new Flight("XC12001", "Italy", "Poland", "Ryanair", LocalDateTime.now().plusHours(29), LocalDateTime.now().plusHours(79), 5000.00, new ArrayList<>(List.of(new Seat("1A"), new Seat("1B"),new Seat("1C"), new Seat("1D"))));
 		Flight flight3 = new Flight("XE12991", "Poland", "Germany", "Wizzair", LocalDateTime.now().plusHours(31), LocalDateTime.now().plusHours(81), 5000.00, new ArrayList<>());
 		Flight flight4 = new Flight("XE12971", "Poland", "Germany", "Wizzair", LocalDateTime.now().plusMonths(3), LocalDateTime.now().plusMonths(3).plusHours(9), 5000.00, new ArrayList<>());
 		Flight flight5 = new Flight("XE92971", "Poland", "Germany", "Ryanair", LocalDateTime.now().plusMonths(4), LocalDateTime.now().plusMonths(4).plusHours(9), 5000.00, new ArrayList<>());

@@ -1,18 +1,18 @@
 package com.example.LOT.entity;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 
 @Entity
 public class Flight {
 
     @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String flightNumber;
     private String origin;
@@ -39,11 +39,10 @@ public class Flight {
     }
 
     public boolean isSeatTaken(String seatNumber) {
-        for (Seat seat : seats) {
-            return !Objects.equals(seat.getSeatNumber(), seatNumber) || seat.getPassengerId() != null;
-        }
-        return true;
+        Optional<Seat> findSeat = seats.stream().filter(z->z.getSeatNumber().equals(seatNumber)).findFirst();
+        return findSeat.get().getPassengerId() != null;
     }
+
 
     public void setSeatBusy(String seatNumber, Long passengerId) {
         for (Seat seat : seats) {
@@ -51,6 +50,15 @@ public class Flight {
                 if (seat.getPassengerId() == null) {
                     seat.setPassengerId(passengerId);
                 }
+            }
+        }
+    }
+
+    public void setSeatFree(Long passengerId) {
+        for (Seat seat : seats) {
+            if (Objects.equals(seat.getPassengerId(), passengerId)) {
+                    seat.setPassengerId(null);
+
             }
         }
     }

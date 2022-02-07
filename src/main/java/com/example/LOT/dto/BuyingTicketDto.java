@@ -3,12 +3,16 @@ package com.example.LOT.dto;
 import com.example.LOT.entity.Passenger;
 
 
+import javax.validation.constraints.NotEmpty;
 import java.util.List;
 
 public class BuyingTicketDto {
-    private Long userId; //moge przekazac nulla
-    private Long flightId; //moge przekazac nulla
-    private List<Passenger> passengers; //moge przekazac nulla lub pustą listę pasażerów - to dopiero zrobiłoby psikusa logice
+    @NotEmpty
+    private Long userId;
+    @NotEmpty
+    private Long flightId;
+    @NotEmpty
+    private List<Passenger> passengers;
 
     public BuyingTicketDto(Long userId, Long flightId, List<Passenger> passengers) {
         this.userId = userId;

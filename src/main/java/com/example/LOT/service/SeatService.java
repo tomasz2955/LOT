@@ -1,6 +1,6 @@
 package com.example.LOT.service;
 
-import com.example.LOT.entity.Passenger;
+
 import com.example.LOT.entity.Seat;
 import com.example.LOT.repository.SeatRepository;
 import org.springframework.stereotype.Service;
