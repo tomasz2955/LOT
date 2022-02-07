@@ -41,12 +41,13 @@ public class Flight {
     public boolean isSeatTaken(String seatNumber) {
         Optional<Seat> findSeat = seats.stream().filter(z->z.getSeatNumber().equals(seatNumber)).findFirst();
         return findSeat.get().getPassengerId() != null;
+        //get() swieci na żółto, to zawsze oznacza coś do poprawy
     }
 
 
     public void setSeatBusy(String seatNumber, Long passengerId) {
         for (Seat seat : seats) {
-            if (Objects.equals(seat.getSeatNumber(), seatNumber)) {
+            if (Objects.equals(seat.getSeatNumber(), seatNumber)) { // seat.getSeatNumber().equals(seatNumber)
                 if (seat.getPassengerId() == null) {
                     seat.setPassengerId(passengerId);
                 }

@@ -22,7 +22,7 @@ public class TicketService {
     private final TicketRepository ticketRepository;
     private final UserRepository userRepository;
     private final FlightRepository flightRepository;
-    private final SeatRepository seatRepository;
+    private final SeatRepository seatRepository; //combo, swieci na szaro i zółto
 
     public TicketService(TicketRepository ticketRepository, UserRepository userRepository, FlightRepository flightRepository, SeatRepository seatRepository) {
         this.ticketRepository = ticketRepository;
@@ -39,20 +39,20 @@ public class TicketService {
 
     @Transactional
     public void buyTicket(BuyingTicketDto buyingTicketDto) {
-        User findUser = userRepository.findById(buyingTicketDto.getUserId()).orElseThrow(UserNotFoundException::new);
+        User findUser = userRepository.findById(buyingTicketDto.getUserId()).orElseThrow(UserNotFoundException::new); //to swieci na szaro, to faul jak podswietlenie na zółto
         Flight flight = flightRepository.findById(buyingTicketDto.getFlightId()).orElseThrow();
 
-        if (flight.getSeats().size() >= buyingTicketDto.getPassengers().size()) {
-            for (int i = 0; i < buyingTicketDto.getPassengers().size(); i++) {
+        if (flight.getSeats().size() >= buyingTicketDto.getPassengers().size()) { //te sprawdzenie mialo sens przy wczesniejszej implementacji. teraz jak bookujemy konkretne miejsca to juz nie jest potrzebne
+            for (int i = 0; i < buyingTicketDto.getPassengers().size(); i++) { //lepiej zrobic for eacha zamiast fora z iteratorem, wtedy nie musisz przekazywac indeksu
                 if (!flight.isSeatTaken(buyingTicketDto.getPassengers().get(i).getSeatNumber())) {
                     ticketRepository.save(new Ticket(buyingTicketDto.getUserId(), buyingTicketDto.getPassengers().get(i), flight, LocalDateTime.now(), buyingTicketDto.getPassengers().get(i).getSeatNumber()));
                     flight.setSeatBusy(buyingTicketDto.getPassengers().get(i).getSeatNumber(), buyingTicketDto.getPassengers().get(i).getId());
                 } else {
-                    throw new RuntimeException("At least one of the selected seats is already taken");
+                    throw new RuntimeException("At least one of the selected seats is already taken"); // lenistwo lenistwo
                 }
             }
         }  else {
-            throw new RuntimeException("Not enough free seats");
+            throw new RuntimeException("Not enough free seats"); // lenistwo lenistwo
         }
 
     }
@@ -63,7 +63,7 @@ public class TicketService {
 
     @Transactional
     public void deleteTicket(ReturnTicketDto returnTicketDto) {
-        Ticket findTicket = ticketRepository.findById(returnTicketDto.getTicketId()).orElseThrow(UserNotFoundException::new);
+        Ticket findTicket = ticketRepository.findById(returnTicketDto.getTicketId()).orElseThrow(UserNotFoundException::new); //nazwij zmienną po prostu ticket ewentualnie foundTicket
         if (returnTicketDto.getPassengerId().equals(findTicket.getPassenger().getId())) {
             LocalDateTime flightDepartureDate = findTicket.getFlight().getDepartureDate();
             LocalDateTime currentTime = LocalDateTime.now();

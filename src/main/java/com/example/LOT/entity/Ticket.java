@@ -14,7 +14,8 @@ public class Ticket {
     @OneToOne(cascade = {CascadeType.ALL})
     @JoinColumn(name = "passenger_id")
     private Passenger passenger;
-    @ManyToOne(cascade = {CascadeType.ALL})
+    @ManyToOne(cascade = {CascadeType.ALL}) //nie wiem czy ten cascade all tutaj jest dobry. To oznaczałoby ze jak usuniesz ticketa to chcesz zeby kaskadowo tez usunał się lot a tego nie chcemy
+    //wydaje mi sie ze to powinno byc od strony lotu - gdy usuwasz lot chcesz kaskadowo usunąć wszystie bilety na niego
     @JoinColumn(name = "flight_id")
     private Flight flight;
     private LocalDateTime dateOfPurchase;
