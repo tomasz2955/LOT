@@ -8,7 +8,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
-import java.time.LocalDate;
+
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,16 +18,11 @@ public class LotApplication implements CommandLineRunner {
 
 	private final UserRepository userRepository;
 	private final FlightRepository flightRepository;
-	private final TicketRepository ticketRepository;
-	private final PassengerRepository passengerRepository;
-	private final SeatRepository seatRepository;
 
-	public LotApplication(UserRepository userRepository, FlightRepository flightRepository, TicketRepository ticketRepository, PassengerRepository passengerRepository, SeatRepository seatRepository) {
+
+	public LotApplication(UserRepository userRepository, FlightRepository flightRepository) {
 		this.userRepository = userRepository;
 		this.flightRepository = flightRepository;
-		this.ticketRepository = ticketRepository;
-		this.passengerRepository = passengerRepository;
-		this.seatRepository = seatRepository;
 	}
 
 
@@ -50,7 +45,7 @@ public class LotApplication implements CommandLineRunner {
 
 
 
-		Flight flight1 = new Flight("WE34567", "Poland", "Germany", "Wizzair", LocalDateTime.now().plusHours(9), LocalDateTime.now().plusHours(13), 5000.00, new ArrayList<>(List.of(new Seat("1A"), new Seat("1B"),new Seat("1C"), new Seat("1D"))));
+		Flight flight1 = new Flight("WE34567", "Poland", "Germany", "Wizzair", LocalDateTime.now().plusHours(9), LocalDateTime.now().plusHours(13), 5000.00, new ArrayList<>(List.of(new Seat("1E"), new Seat("1F"),new Seat("1G"), new Seat("1H"))));
 		Flight flight2 = new Flight("XC12001", "Italy", "Poland", "Ryanair", LocalDateTime.now().plusHours(29), LocalDateTime.now().plusHours(79), 5000.00, new ArrayList<>(List.of(new Seat("1A"), new Seat("1B"),new Seat("1C"), new Seat("1D"))));
 		Flight flight3 = new Flight("XE12991", "Poland", "Germany", "Wizzair", LocalDateTime.now().plusHours(31), LocalDateTime.now().plusHours(81), 5000.00, new ArrayList<>());
 		Flight flight4 = new Flight("XE12971", "Poland", "Germany", "Wizzair", LocalDateTime.now().plusMonths(3), LocalDateTime.now().plusMonths(3).plusHours(9), 5000.00, new ArrayList<>());

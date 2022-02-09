@@ -10,8 +10,6 @@ public class FindByIdResponseDto {
         private String phoneNumber;
         private List<Ticket> tickets;
 
-
-        //jak sie cos swieci na szaro to znaczy ze nie uzywane takze mozna usunac
     public FindByIdResponseDto(Long id, String name, String lastName, String email, String phoneNumber, List<Ticket> tickets) {
         this.id = id;
         this.name = name;
