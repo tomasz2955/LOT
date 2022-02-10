@@ -38,7 +38,9 @@ public class Flight {
 
     public boolean isSeatTaken(String seatNumber) {
         for (Seat seat : seats) {
-            if (seat.getSeatNumber().equals(seatNumber)) {
+            if (seat.getSeatNumber().equals(seatNumber)) { //zalozmy ze podam seatNumber dupa123, wynik tej metody
+                //zwroci mi false mimo to że nazwa siedzenia jest niepoprawna.
+                //trzebaby dodac sprawdzenie czy taka nazwa siedzenia w ogole istnieje
                 if (seat.getPassengerId() == null) {
                     return false;
                 }
@@ -51,7 +53,9 @@ public class Flight {
     public void setSeatBusy(String seatNumber, Long passengerId) {
         for (Seat seat : seats) {
             if (seat.getSeatNumber().equals(seatNumber)) {
-                if (seat.getPassengerId() == null) {
+                if (seat.getPassengerId() == null) { //a jezeli nie jest puste to nic sie nie wykona
+                    //jest szansa ze 2 osoby beda kupowac w tym samym momencie i lot bedzie mial jednego czlowieka przysadzonego na to miejsce
+                    //a drugi bedzie sie awanturowac pokazując na swoj bilet ktory tez teoretycznie ma to samo miejsce
                     seat.setPassengerId(passengerId);
                 }
             }

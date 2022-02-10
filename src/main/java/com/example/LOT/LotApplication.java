@@ -41,7 +41,7 @@ public class LotApplication implements CommandLineRunner {
 
 	}
 
-	Cron cron = new Cron();
+	Cron cron = new Cron(); //trochę niefortunna nazwa, może FlightGenerator bylby lepszy. czegos tu brakuje do przekazania
 
 	@Scheduled(cron="*/10 * * * * MON-SUN")
 	public void createFlight() {
