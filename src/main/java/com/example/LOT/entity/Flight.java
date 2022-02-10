@@ -58,7 +58,6 @@ public class Flight {
         }
     }
 
-
     public void setSeatFree(Long passengerId) {
         for (Seat seat : seats) {
             if (Objects.equals(seat.getPassengerId(), passengerId)) {
@@ -67,7 +66,6 @@ public class Flight {
             }
         }
     }
-
 
     public Long getId() {
         return id;

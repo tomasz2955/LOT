@@ -26,7 +26,6 @@ public class TicketService {
         this.ticketRepository = ticketRepository;
         this.userRepository = userRepository;
         this.flightRepository = flightRepository;
-
     }
 
 
