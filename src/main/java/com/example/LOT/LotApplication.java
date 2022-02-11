@@ -1,6 +1,6 @@
 package com.example.LOT;
 
-import com.example.LOT.entity.Cron;
+import com.example.LOT.entity.FlightGenerator;
 import com.example.LOT.entity.*;
 import com.example.LOT.repository.*;
 import org.modelmapper.ModelMapper;
@@ -9,7 +9,6 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.scheduling.annotation.EnableScheduling;
-import org.springframework.scheduling.annotation.Scheduled;
 
 
 import java.util.ArrayList;
@@ -38,25 +37,14 @@ public class LotApplication implements CommandLineRunner {
 	public static void main(String[] args) {
 
 		SpringApplication.run(LotApplication.class, args);
-
 	}
-
-	Cron cron = new Cron(); //trochę niefortunna nazwa, może FlightGenerator bylby lepszy. czegos tu brakuje do przekazania
-
-	@Scheduled(cron="*/10 * * * * MON-SUN")
-	public void createFlight() {
-		cron.createFlight();
-	}
-
-
-
-
 
 
 	@Override
 
 	public void run(String... args) throws Exception {
-
+		FlightGenerator flightGenerator = new FlightGenerator(flightRepository);
+		flightGenerator.createFlight();
 
 
 		User user1 = new User("Tomasz", "Bator", "bator@wp.pl", "100200300", "qwerty", new ArrayList<>());
