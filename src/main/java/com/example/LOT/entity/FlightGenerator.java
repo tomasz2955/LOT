@@ -28,7 +28,7 @@ Random random = new Random();
     }
 
     @Transactional
-    @Scheduled(cron="*/10 * * * * MON-SUN")
+    @Scheduled(cron="*/10 * * * * MON-SUN") //chyba jak dasz gwiazdke zamiast mon-sun to bedzie oznaczac ze odpali sie kazdego dnia
     public void createFlight() {
         String origin = countries.get((int)(Math.random()* countries.size()));
         String destination = countries.get((int)(Math.random()* countries.size()));
@@ -37,16 +37,18 @@ Random random = new Random();
                 new Seat("2A"), new Seat("2B"), new Seat("2C"), new Seat("2D"),
                 new Seat("3A"), new Seat("3B"), new Seat("3C"), new Seat("3D"),
                 new Seat("4A"), new Seat("4B"), new Seat("4C"), new Seat("4D"));
-        LocalDateTime departureDate = LocalDateTime.now().plusHours(random.nextLong(4000));
-        LocalDateTime dateOfArrival = departureDate.plusHours(random.nextLong(24));
-        long flightNumber = random.nextLong(1000000);
+        //fajnie ogarnięty temat dat :)
+        LocalDateTime departureDate = LocalDateTime.now().plusHours(random.nextLong(4000)); //to mi sie nie kompiluje, podkresla liczbe na czerwono
+        LocalDateTime dateOfArrival = departureDate.plusHours(random.nextLong(24)); //to mi sie nie kompiluje, podkresla liczbe na czerwono
+        long flightNumber = random.nextLong(1000000); //to mi sie nie kompiluje, podkresla liczbe na czerwono
+        //trzebaby sprawdzic czy przypadkiem taki flight z tym id nie istnieje, mała szansa ale jest
 
-        if(!Objects.equals(origin, destination)) {
+        if(!Objects.equals(origin, destination)) { //nie musisz uzywac object equals, pisz poprostu origin.equals(destination)
             Flight flight = new Flight(Long.toString(flightNumber), origin, destination, airline, departureDate, dateOfArrival, 5000.0, seats);
             flightRepository.save(flight);
             System.out.println("creating another flight");
         } else {
-            createFlight();
+            createFlight(); //bardzo sprytne, dobra robota :)
         }
 
 
