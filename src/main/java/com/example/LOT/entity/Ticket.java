@@ -16,6 +16,7 @@ public class Ticket {
     private Flight flight;
     private LocalDateTime dateOfPurchase;
     private String seatNumber;
+    private Double price;
 
     public Ticket(Long userId, Passenger passenger, Flight flight, LocalDateTime dateOfPurchase, String seatNumber) {
         this.userId = userId;
@@ -23,6 +24,7 @@ public class Ticket {
         this.flight = flight;
         this.dateOfPurchase = dateOfPurchase;
         this.seatNumber = seatNumber;
+        this.price = flight.getPrice();
     }
 
     public Ticket() {
@@ -74,5 +76,13 @@ public class Ticket {
 
     public void setSeatNumber(String seatNumber) {
         this.seatNumber = seatNumber;
+    }
+
+    public Double getPrice() {
+        return price;
+    }
+
+    public void setPrice(Double price) {
+        this.price = price;
     }
 }

@@ -1,5 +1,6 @@
 package com.example.LOT.service;
 
+import com.example.LOT.FlightNotFoundException;
 import com.example.LOT.UserNotFoundException;
 import com.example.LOT.dto.BuyingTicketDto;
 import com.example.LOT.dto.ReturnTicketDto;
@@ -12,6 +13,9 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.List;
+
+import static java.time.DayOfWeek.MONDAY;
+
 
 @Service
 public class TicketService {
@@ -38,17 +42,21 @@ public class TicketService {
     @Transactional
     public void buyTicket(BuyingTicketDto buyingTicketDto) {
         if (userRepository.findById(buyingTicketDto.getUserId()).isPresent()) {
-            Flight flight = flightRepository.findById(buyingTicketDto.getFlightId()).orElseThrow(); //orelsethrow co
+            Flight flight = flightRepository.findById(buyingTicketDto.getFlightId()).orElseThrow(FlightNotFoundException::new);
                 for (int i = 0; i < buyingTicketDto.getPassengers().size(); i++) { //zamiast zwyklego fora - foreach, itercja przez siedzenia
                     if (!flight.isSeatTaken(buyingTicketDto.getPassengers().get(i).getSeatNumber())) {
-                        ticketRepository.save(new Ticket(buyingTicketDto.getUserId(), buyingTicketDto.getPassengers().get(i), flight, LocalDateTime.now(), buyingTicketDto.getPassengers().get(i).getSeatNumber()));
+                        Ticket ticket = new Ticket(buyingTicketDto.getUserId(), buyingTicketDto.getPassengers().get(i), flight, LocalDateTime.now(), buyingTicketDto.getPassengers().get(i).getSeatNumber());
+                        if(LocalDateTime.now().getDayOfWeek()==MONDAY) {
+                            ticket.setPrice(flight.getPrice()-(flight.getPrice()*0.2));
+                        }
+                        ticketRepository.save(ticket);
                         flight.setSeatBusy(buyingTicketDto.getPassengers().get(i).getSeatNumber(), buyingTicketDto.getPassengers().get(i).getId());
                     } else {
                         throw new RuntimeException("At least one of the selected seats is already taken");
                     }
                 }
         } else {
-            throw new RuntimeException("At least one of the selected seats is already taken"); //taki exception ma poleciec jak brak jest usera o danym id?
+            throw new RuntimeException("User not found");
         }
     }
 
@@ -63,7 +71,7 @@ public class TicketService {
             if(duration.toHours() <=MAX_HOURS_BEFORE_DEPARTURE) {
                 throw new RuntimeException("Ticket cannot be returned, departure time is less than 24 hours");
             } else {
-                Flight flight = flightRepository.findById(ticket.getFlight().getId()).orElseThrow(); //orelsethrow co
+                Flight flight = flightRepository.findById(ticket.getFlight().getId()).orElseThrow(FlightNotFoundException::new);
                 flight.setSeatFree(returnTicketDto.getPassengerId());
                 ticketRepository.deleteById(returnTicketDto.getTicketId());
             }
