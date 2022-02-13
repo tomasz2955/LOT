@@ -43,7 +43,7 @@ public class TicketService {
     public void buyTicket(BuyingTicketDto buyingTicketDto) {
         if (userRepository.findById(buyingTicketDto.getUserId()).isPresent()) {
             Flight flight = flightRepository.findById(buyingTicketDto.getFlightId()).orElseThrow(FlightNotFoundException::new);
-                for (int i = 0; i < buyingTicketDto.getPassengers().size(); i++) { //zamiast zwyklego fora - foreach, itercja przez siedzenia
+                for (int i = 0; i < buyingTicketDto.getPassengers().size(); i++) { //zamiast zwyklego fora - foreach, itercja przez siedzenia. Dalej podtrzymuje
                     if (!flight.isSeatTaken(buyingTicketDto.getPassengers().get(i).getSeatNumber())) {
                         Ticket ticket = new Ticket(buyingTicketDto.getUserId(), buyingTicketDto.getPassengers().get(i), flight, LocalDateTime.now(), buyingTicketDto.getPassengers().get(i).getSeatNumber());
                         if(LocalDateTime.now().getDayOfWeek()==MONDAY) {
