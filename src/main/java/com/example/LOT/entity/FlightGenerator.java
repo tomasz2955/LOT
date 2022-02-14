@@ -39,9 +39,8 @@ Random random = new Random();
         LocalDateTime dateOfArrival = departureDate.plusHours(random.nextInt(24));
 
         long flightNumber = random.nextInt(1000000);
-        Optional<Flight> searchingFlight = flightRepository.findByFlightNumber(Long.toString(flightNumber)); //zastosowalbym metodę existsBy... nie potrzebujesz wyciagnac lot z bazy
-        //potrzebujesz tylko info czy lot juz istnieje. taka metoda zwroci ci booleana
-        if(searchingFlight.isPresent()) {
+
+        if(flightRepository.existsByFlightNumber(Long.toString(flightNumber))) {
             createFlight();
         }
 

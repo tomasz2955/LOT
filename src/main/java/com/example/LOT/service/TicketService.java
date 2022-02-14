@@ -5,6 +5,7 @@ import com.example.LOT.UserNotFoundException;
 import com.example.LOT.dto.BuyingTicketDto;
 import com.example.LOT.dto.ReturnTicketDto;
 import com.example.LOT.entity.Flight;
+import com.example.LOT.entity.Passenger;
 import com.example.LOT.entity.Ticket;
 import com.example.LOT.repository.*;
 import org.springframework.stereotype.Service;
@@ -43,14 +44,15 @@ public class TicketService {
     public void buyTicket(BuyingTicketDto buyingTicketDto) {
         if (userRepository.findById(buyingTicketDto.getUserId()).isPresent()) {
             Flight flight = flightRepository.findById(buyingTicketDto.getFlightId()).orElseThrow(FlightNotFoundException::new);
-                for (int i = 0; i < buyingTicketDto.getPassengers().size(); i++) { //zamiast zwyklego fora - foreach, itercja przez siedzenia. Dalej podtrzymuje
-                    if (!flight.isSeatTaken(buyingTicketDto.getPassengers().get(i).getSeatNumber())) {
-                        Ticket ticket = new Ticket(buyingTicketDto.getUserId(), buyingTicketDto.getPassengers().get(i), flight, LocalDateTime.now(), buyingTicketDto.getPassengers().get(i).getSeatNumber());
+
+            for(Passenger passengers : buyingTicketDto.getPassengers()) {
+                if(!flight.isSeatTaken(passengers.getSeatNumber())) {
+                        Ticket ticket = new Ticket(buyingTicketDto.getUserId(), passengers, flight, LocalDateTime.now(), passengers.getSeatNumber());
                         if(LocalDateTime.now().getDayOfWeek()==MONDAY) {
                             ticket.setPrice(flight.getPrice()-(flight.getPrice()*0.2));
                         }
                         ticketRepository.save(ticket);
-                        flight.setSeatBusy(buyingTicketDto.getPassengers().get(i).getSeatNumber(), buyingTicketDto.getPassengers().get(i).getId());
+                        flight.setSeatBusy(passengers.getSeatNumber(), passengers.getId());
                     } else {
                         throw new RuntimeException("At least one of the selected seats is already taken");
                     }

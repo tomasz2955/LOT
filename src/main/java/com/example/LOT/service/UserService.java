@@ -2,7 +2,9 @@ package com.example.LOT.service;
 
 
 import com.example.LOT.dto.*;
+import com.example.LOT.entity.Ticket;
 import com.example.LOT.entity.User;
+import com.example.LOT.repository.TicketRepository;
 import com.example.LOT.repository.UserRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -16,12 +18,14 @@ import java.util.List;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final TicketRepository ticketRepository;
     private final ModelMapper mapper = new ModelMapper();
 
-
-    public UserService(UserRepository theUserRepository) {
-        this.userRepository = theUserRepository;
+    public UserService(UserRepository userRepository, TicketRepository ticketRepository) {
+        this.userRepository = userRepository;
+        this.ticketRepository = ticketRepository;
     }
+
 
     public List<User> getUsers() {
         return userRepository.findAll();
@@ -33,9 +37,13 @@ public class UserService {
     }
 
 
-    public UserTicketsDto findTicketById(Long id) {
+    public Ticket findTicketByTicketId(Long id) {
+        return ticketRepository.findById(id).orElseThrow();
+    }
+
+    public UserTicketsDto findTicketByUserId(Long id) {
         User editedUser = userRepository.findById(id).orElseThrow();
-        return mapper.map(editedUser, UserTicketsDto.class);
+        return new UserTicketsDto(id, editedUser.getTickets());
     }
 
 

@@ -27,10 +27,17 @@ public class TicketController {
         return ticketService.getTickets();
     }
 
-    @GetMapping("/{id}")
-    public UserTicketsDto findTicketById(@PathVariable Long id) {
-        return userService.findTicketById(id);
+    @GetMapping("/ticket/{id}")
+    public Ticket findTicketByTicketId(@PathVariable Long id) {
+        return userService.findTicketByTicketId(id);
     }
+
+    @GetMapping("/user/{id}")
+    public UserTicketsDto findTicketByUserId(@PathVariable Long id) {
+        return userService.findTicketByUserId(id);
+    }
+
+
 
     @PostMapping("/buy")
     public void buyTicket(@RequestBody BuyingTicketDto buyingTicketDto) {

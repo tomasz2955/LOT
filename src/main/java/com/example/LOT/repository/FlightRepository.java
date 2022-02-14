@@ -13,7 +13,8 @@ import java.util.Optional;
 @Repository
 public interface FlightRepository extends JpaRepository<Flight, Long> {
     List<Flight> findByOriginAndDestination (String origin, String destination);
-    Optional<Flight> findByFlightNumber (String flightNumber);
+
+    Boolean existsByFlightNumber (String flightNumber);
 
     List<Flight> findByOriginAndDestinationAndDepartureDateBetween(String origin, String destination, LocalDateTime departureDateStart, LocalDateTime departureDateEnd);
 
