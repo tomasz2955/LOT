@@ -42,7 +42,7 @@ public class UserService {
     }
 
     public UserTicketsDto findTicketByUserId(Long id) {
-        User editedUser = userRepository.findById(id).orElseThrow();
+        User editedUser = userRepository.findById(id).orElseThrow(); //orelse throw co
         return new UserTicketsDto(id, editedUser.getTickets());
     }
 
