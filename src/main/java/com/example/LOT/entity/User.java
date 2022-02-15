@@ -15,8 +15,9 @@ public class User {
     private String email;
     private String phoneNumber;
     private String password;
-    @JsonManagedReference
-    @OneToMany(mappedBy="passenger")
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "user_id") //link do poczytania: https://vladmihalcea.com/the-best-way-to-map-a-onetomany-association-with-jpa-and-hibernate/
+    //joinColumn definiuje bo jakim polu tickety mają być matchowane z userem - userId jest ich kluczem który ich połączy
     private List<Ticket> tickets;
 
 

@@ -7,6 +7,7 @@ public class Ticket {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
+    @Column(name = "user_id")
     private Long userId;
     @OneToOne(cascade = {CascadeType.ALL})
     @JoinColumn(name = "passenger_id")
