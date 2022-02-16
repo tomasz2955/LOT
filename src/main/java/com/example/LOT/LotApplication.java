@@ -46,11 +46,11 @@ public class LotApplication implements CommandLineRunner {
 		FlightGenerator flightGenerator = new FlightGenerator(flightRepository);
 		flightGenerator.createFlight();
 
-
 		User user1 = new User("Tomasz", "Bator", "bator@wp.pl", "100200300", "qwerty", new ArrayList<>());
 		User user2 = new User("Piotr", "Kowalski", "kowalski@wp.pl", "4005006000", "asdfgh", new ArrayList<>());
 		userRepository.save(user1);
 		userRepository.save(user2);
+
 
 
 	}

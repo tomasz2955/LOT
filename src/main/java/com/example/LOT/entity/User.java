@@ -16,9 +16,11 @@ public class User {
     private String phoneNumber;
     private String password;
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "user_id") //link do poczytania: https://vladmihalcea.com/the-best-way-to-map-a-onetomany-association-with-jpa-and-hibernate/
-    //joinColumn definiuje bo jakim polu tickety mają być matchowane z userem - userId jest ich kluczem który ich połączy
+    @JoinColumn(name = "user_id")
     private List<Ticket> tickets;
+  //link do poczytania: https://vladmihalcea.com/the-best-way-to-map-a-onetomany-association-with-jpa-and-hibernate/
+    //joinColumn definiuje bo jakim polu tickety mają być matchowane z userem - userId jest ich kluczem który ich połączy
+
 
 
     public User(String name, String lastName, String email, String phoneNumber, String password, List<Ticket> tickets) {

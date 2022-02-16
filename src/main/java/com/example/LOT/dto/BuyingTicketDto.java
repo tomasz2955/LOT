@@ -3,6 +3,7 @@ package com.example.LOT.dto;
 import com.example.LOT.entity.Passenger;
 
 
+import javax.persistence.OneToMany;
 import javax.validation.constraints.NotEmpty;
 import java.util.List;
 
@@ -12,6 +13,7 @@ public class BuyingTicketDto {
     @NotEmpty
     private Long flightId;
     @NotEmpty
+
     private List<Passenger> passengers;
 
     public BuyingTicketDto(Long userId, Long flightId, List<Passenger> passengers) {
