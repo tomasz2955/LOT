@@ -15,15 +15,41 @@ import static org.mockito.Mockito.when;
 
 class UserServiceTest {
 
+    @Test
+    void shouldGetUsers() {
+
+        //mock userRepository
+        //mock ticketRepository
+
+        when( userRepository.findAll() => List<User>)
+
+        UserService userService = new UserService(userRepo, ticketRepo);
+
+        int result = userService.getUsers().size();
+        assertEquals(result, 1);
+    }
 
     @Test
-    void getUsers() {
+    void shouldFindById() {
+        //mock userRepository
+        //mock ticketRepository
 
-        UserService userService = mock(UserService.class);
-        when(userService.getUsers()).thenReturn(List.of(new User("Tomasz", "Bator", "bator@wp.pl", "100200300",
-                "qwerty", new ArrayList<>())));
-        int result = userService.getUsers().size();
-        assertEquals(result, 1,0);
+        UserService userService = new UserService(userRepo, ticketRepo);
+
+        when(userRepository.findById(id) => User)
+
+        userService.findById()
+    }
+
+    @Test
+    void shouldThrowExceptionWhenFindByIdFoundNothing() {
+        //mock userRepository
+        //mock ticketRepository
+
+        UserService userService = new UserService(userRepo, ticketRepo);
+
+        when(userRepository.findById(id) => null)
 
     }
+
 }
