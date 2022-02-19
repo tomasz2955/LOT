@@ -1,6 +1,8 @@
 package com.example.LOT.service;
 
 
+import com.example.LOT.FlightNotFoundException;
+import com.example.LOT.UserNotFoundException;
 import com.example.LOT.dto.*;
 import com.example.LOT.entity.Ticket;
 import com.example.LOT.entity.User;
@@ -32,13 +34,13 @@ public class UserService {
     }
 
     public FindByIdResponseDto findById(Long id) {
-        User mappingUser = userRepository.findById(id).orElseThrow(); //orelse co
+        User mappingUser = userRepository.findById(id).orElseThrow(UserNotFoundException::new); //orelse co
         return mapper.map(mappingUser, FindByIdResponseDto.class);
     }
 
 
     public Ticket findTicketByTicketId(Long id) {
-        return ticketRepository.findById(id).orElseThrow(); //orelse co
+        return ticketRepository.findById(id).orElseThrow(UserNotFoundException::new);
     }
 
     public UserTicketsDto findTicketByUserId(Long id) {
