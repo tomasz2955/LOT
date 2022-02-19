@@ -1,6 +1,7 @@
 package com.example.LOT.service;
 
 import com.example.LOT.UserNotFoundException;
+import com.example.LOT.dto.FindByIdResponseDto;
 import com.example.LOT.entity.User;
 import com.example.LOT.repository.TicketRepository;
 import com.example.LOT.repository.UserRepository;
@@ -25,19 +26,26 @@ class UserServiceTest {
         UserRepository userRepository = mock(UserRepository.class);
         TicketRepository ticketRepository = mock(TicketRepository.class);
         UserService userService = new UserService(userRepository, ticketRepository);
-        when(userService.getUsers()).thenReturn(List.of(new User("Tomasz", "Bator",
-                "bator@wp.pl", "100200300", "qwerty", new ArrayList<>())));
+//        when(userService.getUsers()).thenReturn(List.of(new User("Tomasz", "Bator",
+//                "bator@wp.pl", "100200300", "qwerty", new ArrayList<>())));
         int result = userService.getUsers().size();
         assertEquals(result, 1);
     }
     @Test
-    void shouldThrowExceptionWhenUserIsFound() {
+    void shouldThrowExceptionWhenUserIsFound() { //nazwa
+        //given
         UserRepository userRepository = mock(UserRepository.class);
         TicketRepository ticketRepository = mock(TicketRepository.class);
         UserService userService = new UserService(userRepository, ticketRepository);
         when(userRepository.findById(1L)).thenReturn(Optional.of(new User("Tomasz", "Bator",
                 "bator@wp.pl", "100200300", "qwerty", new ArrayList<>())));
-        assertThrows(UserNotFoundException.class, ()->userService.findById(1L));
+
+        //when
+        FindByIdResponseDto response = userService.findById(1L);
+
+        //then
+//        assertEquals();
+//        assertThrows(UserNotFoundException.class, () -> userService.findById(1L));
     }
 
 
@@ -47,7 +55,8 @@ class UserServiceTest {
         TicketRepository ticketRepository = mock(TicketRepository.class);
         UserService userService = new UserService(userRepository, ticketRepository);
         when(ticketRepository.findById(2L)).thenReturn(Optional.empty());
-        assertThrows(UserNotFoundException.class, ()->userService.findTicketByTicketId(2L));
+
+        assertThrows(UserNotFoundException.class, () -> userService.findTicketByTicketId(2L));
     }
 
 

@@ -41,7 +41,7 @@ public class TicketService {
 
 
     @Transactional
-    public void buyTicket(BuyingTicketDto buyingTicketDto) {
+    public Ticket buyTicket(BuyingTicketDto buyingTicketDto) {
         if (userRepository.findById(buyingTicketDto.getUserId()).isPresent()) {
             Flight flight = flightRepository.findById(buyingTicketDto.getFlightId()).orElseThrow(FlightNotFoundException::new);
 
@@ -53,6 +53,7 @@ public class TicketService {
                         }
                         ticketRepository.save(ticket);
                         flight.setSeatBusy(passengers.getSeatNumber(), passengers.getId());
+                        return ticket;
                     } else {
                         throw new RuntimeException("At least one of the selected seats is already taken");
                     }
@@ -60,6 +61,7 @@ public class TicketService {
         } else {
             throw new RuntimeException("User not found");
         }
+        return null; //tym sie nie przejmuj tu nigdy sie nie pojawi ale java wymusza dodanie
     }
 
 

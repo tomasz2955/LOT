@@ -1,10 +1,10 @@
 package com.example.LOT;
 
 
-import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -30,26 +30,23 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
                                                                   HttpHeaders headers, HttpStatus status,
                                                                   WebRequest request) {
         List<String> errorMessages = ex.getBindingResult().getFieldErrors().stream()
-                .map(DefaultMessageSourceResolvable::getDefaultMessage)
+                .map((FieldError fieldError) -> fieldError.getField() + " - " + fieldError.getDefaultMessage())
                 .collect(Collectors.toList());
-
-        return new ResponseEntity<>(new ExceptionResponse("chce wyswietlic wszystkie exceptiony z error messages jeden po drugim"), HttpStatus.BAD_REQUEST);
-    }   //how to collect list of strings into one string java
-
-
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    @ExceptionHandler(UserNotFoundException.class)
-    public final ResponseEntity<ExceptionResponse> handleUserNotFoundException(UserNotFoundException ex, final HttpServletRequest request) {
-        logger.info("Udalo sie zarejestrowac user o id asassa  i assas");
-        logger.warn("Cos nie wyszlo ale nie szkodzi");
-        logger.error(MessageCodes.findByCode(ex.getCode()));
-        return new ResponseEntity<>(new ExceptionResponse(ex.getCode()), HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(new ExceptionResponse(errorMessages), HttpStatus.BAD_REQUEST);
     }
+
+
+//    @ResponseStatus(HttpStatus.NO_CONTENT)
+//    @ExceptionHandler(UserNotFoundException.class)
+//    public final ResponseEntity<ExceptionResponse> handleUserNotFoundException(UserNotFoundException ex, final HttpServletRequest request) {
+//        return new ResponseEntity<>(new ExceptionResponse(ex.getCode()), HttpStatus.NOT_FOUND);
+//    }
 }
 
 
 class ExceptionResponse {
     private String message;
+    private List<String> fieldValidationMessages;
     private Code code;
 
     public ExceptionResponse(Code code) {
@@ -58,6 +55,10 @@ class ExceptionResponse {
 
     public ExceptionResponse(String message) {
         this.message = message;
+    }
+
+    public ExceptionResponse(List<String> fieldValidationMessages) {
+        this.fieldValidationMessages = fieldValidationMessages;
     }
 
     public Code getCode() {
@@ -74,5 +75,13 @@ class ExceptionResponse {
 
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    public List<String> getFieldValidationMessages() {
+        return fieldValidationMessages;
+    }
+
+    public void setFieldValidationMessages(List<String> fieldValidationMessages) {
+        this.fieldValidationMessages = fieldValidationMessages;
     }
 }

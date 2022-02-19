@@ -34,13 +34,15 @@ public class UserService {
     }
 
     public FindByIdResponseDto findById(Long id) {
-        User mappingUser = userRepository.findById(id).orElseThrow(UserNotFoundException::new); //orelse co
+        User mappingUser = userRepository.findById(id)
+                .orElseThrow((RuntimeException::new)); //orelse co
         return mapper.map(mappingUser, FindByIdResponseDto.class);
     }
 
 
     public Ticket findTicketByTicketId(Long id) {
-        return ticketRepository.findById(id).orElseThrow(UserNotFoundException::new);
+        return ticketRepository.findById(id)
+                .orElseThrow(UserNotFoundException::new);
     }
 
     public UserTicketsDto findTicketByUserId(Long id) {
@@ -49,7 +51,7 @@ public class UserService {
     }
 
 
-    public Long saveUser(RegisterUserDto registerUserDto) {
+    public User saveUser(RegisterUserDto registerUserDto) {
         Boolean isPresent = userRepository.existsByEmail(registerUserDto.getEmail());
         if(!isPresent) {
             User registerUser = new User();
@@ -62,8 +64,7 @@ public class UserService {
             String[] items = registerUserDto.getFullName().split("_");
             registerUser.setName(items[0]);
             registerUser.setLastName(items[1]);
-            User savedUser = userRepository.save(registerUser);
-            return savedUser.getId();
+            return userRepository.save(registerUser);
         }
         else {
             throw new RuntimeException("mail exists");

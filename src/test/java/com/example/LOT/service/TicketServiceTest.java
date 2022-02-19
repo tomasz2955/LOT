@@ -16,13 +16,19 @@ import static org.mockito.Mockito.when;
 public class TicketServiceTest {
 
     @Test
-    void shouldThrowExceptionWhenTicketNotFound() {
+    void shouldThrowExceptionWhenTicketNotFound() { //nazwa
+        //given
         UserRepository userRepository = mock(UserRepository.class);
         TicketRepository ticketRepository = mock(TicketRepository.class);
         UserService userService = new UserService(userRepository, ticketRepository);
-        when(userService.getUsers()).thenReturn(List.of(new User("Tomasz", "Bator",
+
+        when(userService.getUsers()).thenReturn(List.of(new User("Tomasz", "Bator", //repo nie service
                 "bator@wp.pl", "100200300", "qwerty", new ArrayList<>())));
+
+        //when
         int result = userService.getUsers().size();
+
+        //then
         assertEquals(result, 1);
     }
 
