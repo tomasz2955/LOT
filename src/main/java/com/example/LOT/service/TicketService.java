@@ -59,7 +59,7 @@ public class TicketService {
                     }
                 }
         } else {
-            throw new RuntimeException("User not found");
+            throw new UserNotFoundException();
         }
         return null; //tym sie nie przejmuj tu nigdy sie nie pojawi ale java wymusza dodanie
     }
