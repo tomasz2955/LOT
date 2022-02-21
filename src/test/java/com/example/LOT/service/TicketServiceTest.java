@@ -70,19 +70,20 @@ public class TicketServiceTest {
     @Test
     void shouldThrowExceptionWhenSeatIsBusy() {
         //given
-        Flight flight = new Flight();
 
         BuyingTicketDto buyingTicketDto = new BuyingTicketDto(1L, 1L, List.of(new Passenger("Tomasz", "Bator", LocalDate.now(), "1A", false)));
         UserRepository userRepository = mock(UserRepository.class);
         TicketRepository ticketRepository = mock(TicketRepository.class);
         FlightRepository flightRepository = mock(FlightRepository.class);
+        Flight flight = mock(Flight.class);
+
         TicketService ticketService = new TicketService(ticketRepository, userRepository, flightRepository);
         when(userRepository.findById(1L)).thenReturn(Optional.of(new User("Tomasz", "Bator",
                 "bator@wp.pl", "100200300", "qwerty", new ArrayList<>())));
         when(flightRepository.findById(1L)).thenReturn(Optional.of(new Flight("123456", "Poland", "Germany", "Ryanair",
                         LocalDateTime.now(), LocalDateTime.now().plusHours(7), 5000.00, List.of(new Seat("1A"), new Seat("2A")))));
 
-        when(flight.isSeatTaken("1A")).thenReturn(Boolean.FALSE);
+        when(flight.isSeatTaken("1A")).thenReturn(Boolean.TRUE);
 
         //then
         assertThrows(RuntimeException.class, () -> ticketService.buyTicket(buyingTicketDto));

@@ -55,7 +55,8 @@ public class TicketService {
                         flight.setSeatBusy(passengers.getSeatNumber(), passengers.getId());
                         return ticket;
                     } else {
-                        throw new RuntimeException("At least one of the selected seats is already taken");
+                    throw new RuntimeException();
+                       // throw new RuntimeException("At least one of the selected seats is already taken");
                     }
                 }
         } else {
