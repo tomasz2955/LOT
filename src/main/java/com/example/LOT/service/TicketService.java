@@ -45,14 +45,14 @@ public class TicketService {
         if (userRepository.findById(buyingTicketDto.getUserId()).isPresent()) {
             Flight flight = flightRepository.findById(buyingTicketDto.getFlightId()).orElseThrow(FlightNotFoundException::new);
 
-            for(Passenger passengers : buyingTicketDto.getPassengers()) {
-                if(!flight.isSeatTaken(passengers.getSeatNumber())) {
-                        Ticket ticket = new Ticket(buyingTicketDto.getUserId(), passengers, flight, LocalDateTime.now(), passengers.getSeatNumber());
+            for(Passenger passenger : buyingTicketDto.getPassengers()) {
+                if(!flight.isSeatTaken(passenger.getSeatNumber())) {
+                        Ticket ticket = new Ticket(buyingTicketDto.getUserId(), passenger, flight, LocalDateTime.now(), passenger.getSeatNumber());
                         if(LocalDateTime.now().getDayOfWeek()==MONDAY) {
                             ticket.setPrice(flight.getPrice()-(flight.getPrice()*0.2));
                         }
                         ticketRepository.save(ticket);
-                        flight.setSeatBusy(passengers.getSeatNumber(), passengers.getId());
+                        flight.setSeatBusy(passenger.getSeatNumber(), passenger.getId());
                         return ticket;
                     } else {
                     throw new RuntimeException();

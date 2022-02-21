@@ -80,8 +80,7 @@ public class TicketServiceTest {
         TicketService ticketService = new TicketService(ticketRepository, userRepository, flightRepository);
         when(userRepository.findById(1L)).thenReturn(Optional.of(new User("Tomasz", "Bator",
                 "bator@wp.pl", "100200300", "qwerty", new ArrayList<>())));
-        when(flightRepository.findById(1L)).thenReturn(Optional.of(new Flight("123456", "Poland", "Germany", "Ryanair",
-                        LocalDateTime.now(), LocalDateTime.now().plusHours(7), 5000.00, List.of(new Seat("1A"), new Seat("2A")))));
+        when(flightRepository.findById(1L)).thenReturn(Optional.of(flight));
 
         when(flight.isSeatTaken("1A")).thenReturn(Boolean.TRUE);
 
