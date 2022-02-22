@@ -33,6 +33,15 @@ public class Passenger {
         this.isUser = isUser;
     }
 
+    public Passenger(Long id, String name, String lastName, LocalDate dateOfBirth, String seatNumber, boolean isUser) {
+        this.id = id;
+        this.name = name;
+        this.lastName = lastName;
+        this.dateOfBirth = dateOfBirth;
+        this.seatNumber = seatNumber;
+        this.isUser = isUser;
+    }
+
     public Long getId() {
         return id;
     }

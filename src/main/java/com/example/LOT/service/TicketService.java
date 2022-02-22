@@ -1,6 +1,7 @@
 package com.example.LOT.service;
 
 import com.example.LOT.FlightNotFoundException;
+import com.example.LOT.TicketNotFoundException;
 import com.example.LOT.UserNotFoundException;
 import com.example.LOT.dto.BuyingTicketDto;
 import com.example.LOT.dto.ReturnTicketDto;
@@ -14,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 import static java.time.DayOfWeek.MONDAY;
 
@@ -55,8 +57,7 @@ public class TicketService {
                         flight.setSeatBusy(passenger.getSeatNumber(), passenger.getId());
                         return ticket;
                     } else {
-                    throw new RuntimeException();
-                       // throw new RuntimeException("At least one of the selected seats is already taken");
+                    throw new RuntimeException("At least one of the selected seats is already taken");
                     }
                 }
         } else {
@@ -67,8 +68,8 @@ public class TicketService {
 
 
     @Transactional
-    public void deleteTicket(ReturnTicketDto returnTicketDto) {
-        Ticket ticket = ticketRepository.findById(returnTicketDto.getTicketId()).orElseThrow(UserNotFoundException::new);
+    public Ticket deleteTicket(ReturnTicketDto returnTicketDto) {
+        Ticket ticket = ticketRepository.findById(returnTicketDto.getTicketId()).orElseThrow(TicketNotFoundException::new);
         if (returnTicketDto.getPassengerId().equals(ticket.getPassenger().getId())) {
             LocalDateTime flightDepartureDate = ticket.getFlight().getDepartureDate();
             LocalDateTime currentTime = LocalDateTime.now();
@@ -76,15 +77,13 @@ public class TicketService {
             if(duration.toHours() <=MAX_HOURS_BEFORE_DEPARTURE) {
                 throw new RuntimeException("Ticket cannot be returned, departure time is less than 24 hours");
             } else {
-                Flight flight = flightRepository.findById(ticket.getFlight().getId()).orElseThrow(FlightNotFoundException::new);
+                Flight flight = ticket.getFlight();
                 flight.setSeatFree(returnTicketDto.getPassengerId());
                 ticketRepository.deleteById(returnTicketDto.getTicketId());
             }
-        } else {
-            throw new UserNotFoundException();
         }
+        return null;
     }
-
 
 
 }
