@@ -10,6 +10,7 @@ import com.example.LOT.repository.FlightRepository;
 import com.example.LOT.repository.TicketRepository;
 import com.example.LOT.repository.UserRepository;
 import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
@@ -24,10 +25,15 @@ import static org.mockito.Mockito.when;
 
 public class TicketServiceTest {
 
+    private UserRepository userRepository;
+
+    @BeforeEach
+    public void setup() {
+        userRepository = mock(UserRepository.class);
+    }
 
     @Test
     void shouldGetTickets() {
-        UserRepository userRepository = mock(UserRepository.class);
         TicketRepository ticketRepository = mock(TicketRepository.class);
         FlightRepository flightRepository = mock(FlightRepository.class);
         TicketService ticketService = new TicketService(ticketRepository, userRepository, flightRepository);
@@ -38,7 +44,6 @@ public class TicketServiceTest {
 
     @Test
     void shouldThrowExceptionWhenUserNotFound() {
-        UserRepository userRepository = mock(UserRepository.class);
         TicketRepository ticketRepository = mock(TicketRepository.class);
         FlightRepository flightRepository = mock(FlightRepository.class);
         TicketService ticketService = new TicketService(ticketRepository, userRepository, flightRepository);
@@ -49,7 +54,6 @@ public class TicketServiceTest {
 
     @Test
     void shouldThrowExceptionWhenFlightNotFound() {
-        UserRepository userRepository = mock(UserRepository.class);
         TicketRepository ticketRepository = mock(TicketRepository.class);
         FlightRepository flightRepository = mock(FlightRepository.class);
         TicketService ticketService = new TicketService(ticketRepository, userRepository, flightRepository);
@@ -62,7 +66,6 @@ public class TicketServiceTest {
 
     @Test
     void shouldThrowExceptionWhenSeatIsBusy() {
-        UserRepository userRepository = mock(UserRepository.class);
         TicketRepository ticketRepository = mock(TicketRepository.class);
         FlightRepository flightRepository = mock(FlightRepository.class);
         TicketService ticketService = new TicketService(ticketRepository, userRepository, flightRepository);
@@ -77,7 +80,6 @@ public class TicketServiceTest {
 
     @Test
     void shouldThrowExceptionWhenTryToDeleteNonexistentTicket() {
-        UserRepository userRepository = mock(UserRepository.class);
         TicketRepository ticketRepository = mock(TicketRepository.class);
         FlightRepository flightRepository = mock(FlightRepository.class);
         TicketService ticketService = new TicketService(ticketRepository, userRepository, flightRepository);
@@ -88,7 +90,6 @@ public class TicketServiceTest {
 
     @Test
     void shouldThrowExceptionWhenTryToReturnTicketBeforeDate() {
-        UserRepository userRepository = mock(UserRepository.class);
         TicketRepository ticketRepository = mock(TicketRepository.class);
         FlightRepository flightRepository = mock(FlightRepository.class);
         TicketService ticketService = new TicketService(ticketRepository, userRepository, flightRepository);
@@ -102,7 +103,6 @@ public class TicketServiceTest {
 
     @Test
     void shouldDeleteTicketWhenDepartureDateIdGreaterThen24Hours() {
-        UserRepository userRepository = mock(UserRepository.class);
         TicketRepository ticketRepository = mock(TicketRepository.class);
         FlightRepository flightRepository = mock(FlightRepository.class);
         TicketService ticketService = new TicketService(ticketRepository, userRepository, flightRepository);
