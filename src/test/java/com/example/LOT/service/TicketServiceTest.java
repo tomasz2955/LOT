@@ -13,6 +13,7 @@ import org.junit.Before;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -26,17 +27,22 @@ import static org.mockito.Mockito.when;
 public class TicketServiceTest {
 
     private UserRepository userRepository;
+    private TicketRepository ticketRepository;
+    private FlightRepository flightRepository;
+    private TicketService ticketService;
+
 
     @BeforeEach
     public void setup() {
         userRepository = mock(UserRepository.class);
+        ticketRepository = mock(TicketRepository.class);
+        flightRepository = mock(FlightRepository.class);
+        ticketService = new TicketService(ticketRepository, userRepository, flightRepository);
     }
 
     @Test
     void shouldGetTickets() {
-        TicketRepository ticketRepository = mock(TicketRepository.class);
-        FlightRepository flightRepository = mock(FlightRepository.class);
-        TicketService ticketService = new TicketService(ticketRepository, userRepository, flightRepository);
+
         when(ticketRepository.findAll()).thenReturn(List.of(new Ticket(1L, new Passenger(), new Flight(), LocalDateTime.now(), "1A")));
         int result = ticketService.getTickets().size();
         assertEquals(result, 1);
@@ -44,9 +50,7 @@ public class TicketServiceTest {
 
     @Test
     void shouldThrowExceptionWhenUserNotFound() {
-        TicketRepository ticketRepository = mock(TicketRepository.class);
-        FlightRepository flightRepository = mock(FlightRepository.class);
-        TicketService ticketService = new TicketService(ticketRepository, userRepository, flightRepository);
+
         BuyingTicketDto buyingTicketDto = new BuyingTicketDto(1L, 1L, List.of());
         when(userRepository.findById(1L)).thenReturn(Optional.empty());
         assertThrows(UserNotFoundException.class, () -> ticketService.buyTicket(buyingTicketDto));
@@ -54,9 +58,6 @@ public class TicketServiceTest {
 
     @Test
     void shouldThrowExceptionWhenFlightNotFound() {
-        TicketRepository ticketRepository = mock(TicketRepository.class);
-        FlightRepository flightRepository = mock(FlightRepository.class);
-        TicketService ticketService = new TicketService(ticketRepository, userRepository, flightRepository);
         BuyingTicketDto buyingTicketDto = new BuyingTicketDto(1L, 1L, List.of());
         when(userRepository.findById(1L)).thenReturn(Optional.of(new User("Tomasz", "Bator",
                 "bator@wp.pl", "100200300", "qwerty", new ArrayList<>())));
@@ -66,9 +67,6 @@ public class TicketServiceTest {
 
     @Test
     void shouldThrowExceptionWhenSeatIsBusy() {
-        TicketRepository ticketRepository = mock(TicketRepository.class);
-        FlightRepository flightRepository = mock(FlightRepository.class);
-        TicketService ticketService = new TicketService(ticketRepository, userRepository, flightRepository);
         BuyingTicketDto buyingTicketDto = new BuyingTicketDto(1L, 1L, List.of(new Passenger("Tomasz", "Bator", LocalDate.now(), "1A", false)));
         Flight flight = mock(Flight.class);
         User user = mock(User.class);
@@ -79,10 +77,43 @@ public class TicketServiceTest {
     }
 
     @Test
+    void shouldSaveTicket() {
+        Passenger passenger = new Passenger("Tomasz", "Bator", LocalDate.now(), "1A", false);
+        BuyingTicketDto buyingTicketDto = new BuyingTicketDto(1L, 1L, List.of(passenger));
+        User user = mock(User.class);
+        Flight flight = mock(Flight.class);
+        Ticket ticket = new Ticket(buyingTicketDto.getUserId(), passenger, flight, LocalDateTime.now(), passenger.getSeatNumber());
+        when(userRepository.findById(1L)).thenReturn(Optional.of(user));
+        when(flightRepository.findById(1L)).thenReturn(Optional.of(flight));
+        ticketRepository.save(ticket);
+        when(flight.isSeatTaken("1A")).thenReturn(Boolean.FALSE);
+        assertNotNull(ticketService.buyTicket(buyingTicketDto));
+
+
+    }
+/*
+    // TO NIE CHCE ZADZIAŁAĆ
+    @Test
+    void shouldDiscountOnMonday() {
+        Passenger passenger = new Passenger("Tomasz", "Bator", LocalDate.now(), "1A", false);
+        BuyingTicketDto buyingTicketDto = new BuyingTicketDto(1L, 1L, List.of(passenger));
+        User user = new User("Tomasz", "Bator",
+                "bator@wp.pl", "100200300", "qwerty", new ArrayList<>());
+        Flight flight = new Flight(1L,"123456", "Poland", "Germany", "Ryanair",
+                LocalDateTime.now().plusHours(7), LocalDateTime.now().plusHours(9), 5000.00, List.of(new Seat("1A"), new Seat("2A")));
+        Ticket ticket = new Ticket(buyingTicketDto.getUserId(), passenger, flight, LocalDateTime.now(), passenger.getSeatNumber());
+
+        ticketRepository.save(ticket);
+        when(flight.isSeatTaken("1A")).thenReturn(Boolean.FALSE);
+        when(LocalDateTime.now().getDayOfWeek()).thenReturn(DayOfWeek.MONDAY);
+        assertEquals(4000,ticket.getPrice());
+    }
+*/
+
+
+    @Test
     void shouldThrowExceptionWhenTryToDeleteNonexistentTicket() {
-        TicketRepository ticketRepository = mock(TicketRepository.class);
-        FlightRepository flightRepository = mock(FlightRepository.class);
-        TicketService ticketService = new TicketService(ticketRepository, userRepository, flightRepository);
+
         ReturnTicketDto returnTicketDto = new ReturnTicketDto(1L, 1L);
         when(ticketRepository.findById(1L)).thenReturn(Optional.empty());
         assertThrows(TicketNotFoundException.class, () -> ticketService.deleteTicket(returnTicketDto));
@@ -90,9 +121,7 @@ public class TicketServiceTest {
 
     @Test
     void shouldThrowExceptionWhenTryToReturnTicketBeforeDate() {
-        TicketRepository ticketRepository = mock(TicketRepository.class);
-        FlightRepository flightRepository = mock(FlightRepository.class);
-        TicketService ticketService = new TicketService(ticketRepository, userRepository, flightRepository);
+
         ReturnTicketDto returnTicketDto = new ReturnTicketDto(1L, 1L);
         Flight flight = new Flight("123456", "Poland", "Germany", "Ryanair",
                 LocalDateTime.now().plusHours(7), LocalDateTime.now().plusHours(9), 5000.00, List.of(new Seat("1A"), new Seat("2A")));
@@ -103,9 +132,7 @@ public class TicketServiceTest {
 
     @Test
     void shouldDeleteTicketWhenDepartureDateIdGreaterThen24Hours() {
-        TicketRepository ticketRepository = mock(TicketRepository.class);
-        FlightRepository flightRepository = mock(FlightRepository.class);
-        TicketService ticketService = new TicketService(ticketRepository, userRepository, flightRepository);
+
         ReturnTicketDto returnTicketDto = new ReturnTicketDto(1L, 1L);
         Flight flight1 = new Flight("123456", "Poland", "Germany", "Ryanair",
                 LocalDateTime.now().plusHours(50), LocalDateTime.now().plusHours(55), 5000.00, List.of(new Seat("1A"), new Seat("2A")));
@@ -115,6 +142,10 @@ public class TicketServiceTest {
         ticketRepository.deleteById(1L);
         assertNull(ticketService.deleteTicket(returnTicketDto));
     }
+
+
+
+
 
 
 }

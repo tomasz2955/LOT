@@ -33,6 +33,18 @@ public class Flight {
         this.seats = seats;
     }
 
+    public Flight(Long id, String flightNumber, String origin, String destination, String airline, LocalDateTime departureDate, LocalDateTime dateOfArrival, Double price, List<Seat> seats) {
+        this.id = id;
+        this.flightNumber = flightNumber;
+        this.origin = origin;
+        this.destination = destination;
+        this.airline = airline;
+        this.departureDate = departureDate;
+        this.dateOfArrival = dateOfArrival;
+        this.price = price;
+        this.seats = seats;
+    }
+
     public Flight() {
     }
 
