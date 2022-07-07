@@ -32,6 +32,16 @@ public class User {
         this.tickets = tickets;
     }
 
+    public User(Long id, String name, String lastName, String email, String phoneNumber, String password, List<Ticket> tickets) {
+        this.id = id;
+        this.name = name;
+        this.lastName = lastName;
+        this.email = email;
+        this.phoneNumber = phoneNumber;
+        this.password = password;
+        this.tickets = tickets;
+    }
+
     public User() {
     }
 

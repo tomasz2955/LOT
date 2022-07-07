@@ -1,5 +1,6 @@
 package com.example.LOT.service;
 
+import com.example.LOT.FlightNotFoundException;
 import com.example.LOT.dto.*;
 import com.example.LOT.entity.Flight;
 import com.example.LOT.repository.FlightRepository;
@@ -32,7 +33,7 @@ public class FlightService {
         List<Flight> flights = flightRepository.findByOriginAndDestination(originAndDestinationDto.getOrigin(), originAndDestinationDto.getDestination()).
                 stream().filter(p->p.getDepartureDate().getMonth()==LocalDateTime.now().getMonth()).collect(Collectors.toList());;
         if(flights.isEmpty()) {
-            throw new RuntimeException("Flights not found");
+            throw new FlightNotFoundException();
         }
         return flights;
         }

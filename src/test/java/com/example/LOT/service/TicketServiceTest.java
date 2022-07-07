@@ -12,17 +12,16 @@ import com.example.LOT.repository.UserRepository;
 import org.junit.Before;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.MockedStatic;
+import org.mockito.Mockito;
 
-import java.time.DayOfWeek;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.time.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 public class TicketServiceTest {
 
@@ -91,24 +90,29 @@ public class TicketServiceTest {
 
 
     }
-/*
-    // TO NIE CHCE ZADZIAŁAĆ
+
+
+
+
     @Test
     void shouldDiscountOnMonday() {
-        Passenger passenger = new Passenger("Tomasz", "Bator", LocalDate.now(), "1A", false);
-        BuyingTicketDto buyingTicketDto = new BuyingTicketDto(1L, 1L, List.of(passenger));
-        User user = new User("Tomasz", "Bator",
-                "bator@wp.pl", "100200300", "qwerty", new ArrayList<>());
-        Flight flight = new Flight(1L,"123456", "Poland", "Germany", "Ryanair",
-                LocalDateTime.now().plusHours(7), LocalDateTime.now().plusHours(9), 5000.00, List.of(new Seat("1A"), new Seat("2A")));
-        Ticket ticket = new Ticket(buyingTicketDto.getUserId(), passenger, flight, LocalDateTime.now(), passenger.getSeatNumber());
 
-        ticketRepository.save(ticket);
-        when(flight.isSeatTaken("1A")).thenReturn(Boolean.FALSE);
-        when(LocalDateTime.now().getDayOfWeek()).thenReturn(DayOfWeek.MONDAY);
-        assertEquals(4000,ticket.getPrice());
-    }
-*/
+            Passenger passenger = new Passenger("Tomasz", "Bator", LocalDate.now(), "1A", false);
+            BuyingTicketDto buyingTicketDto = new BuyingTicketDto(1L, 1L, List.of(passenger));
+            User user = new User(1L, "Tomasz", "Bator",
+                    "bator@wp.pl", "100200300", "qwerty", new ArrayList<>());
+            Flight flight = new Flight(1L, "123456", "Poland", "Germany", "Ryanair",
+                    LocalDateTime.now().plusHours(7), LocalDateTime.now().plusHours(9), 5000.00, List.of(new Seat("1A"), new Seat("2A")));
+            Ticket ticket = new Ticket(1L, buyingTicketDto.getUserId(), passenger, flight, LocalDateTime.now(), passenger.getSeatNumber());
+
+            ticketService.localDateTime = () -> LocalDateTime.parse("2022-02-21T23:59:59.999");
+            when(userRepository.findById(1L)).thenReturn(Optional.of(user));
+            when(flightRepository.findById(1L)).thenReturn(Optional.of(flight));
+            when(ticketRepository.findById(1L)).thenReturn(Optional.of(ticket));
+            ticketRepository.save(ticket);
+            when(flight.isSeatTaken("1A")).thenReturn(Boolean.FALSE);
+            assertEquals(4000, ticketService.buyTicket(buyingTicketDto).getPrice());
+        }
 
 
     @Test

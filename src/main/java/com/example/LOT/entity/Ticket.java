@@ -28,6 +28,16 @@ public class Ticket {
         this.price = flight.getPrice();
     }
 
+    public Ticket(Long id, Long userId, Passenger passenger, Flight flight, LocalDateTime dateOfPurchase, String seatNumber) {
+        this.id = id;
+        this.userId = userId;
+        this.passenger = passenger;
+        this.flight = flight;
+        this.dateOfPurchase = dateOfPurchase;
+        this.seatNumber = seatNumber;
+        this.price = flight.getPrice();
+    }
+
     public Ticket() {
     }
 

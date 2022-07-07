@@ -12,12 +12,15 @@ import com.example.LOT.repository.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.DayOfWeek;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Supplier;
 
 import static java.time.DayOfWeek.MONDAY;
+import static java.time.DayOfWeek.SATURDAY;
 
 
 @Service
@@ -27,6 +30,9 @@ public class TicketService {
     private final TicketRepository ticketRepository;
     private final UserRepository userRepository;
     private final FlightRepository flightRepository;
+
+    public Supplier<LocalDateTime> localDateTime = LocalDateTime::now;
+
 
 
     public TicketService(TicketRepository ticketRepository, UserRepository userRepository, FlightRepository flightRepository) {
@@ -50,7 +56,7 @@ public class TicketService {
             for(Passenger passenger : buyingTicketDto.getPassengers()) {
                 if(!flight.isSeatTaken(passenger.getSeatNumber())) {
                         Ticket ticket = new Ticket(buyingTicketDto.getUserId(), passenger, flight, LocalDateTime.now(), passenger.getSeatNumber());
-                        if(LocalDateTime.now().getDayOfWeek()==MONDAY) {
+                        if(localDateTime.get().getDayOfWeek() ==MONDAY) {
                             ticket.setPrice(flight.getPrice()-(flight.getPrice()*0.2));
                         }
                         ticketRepository.save(ticket);
