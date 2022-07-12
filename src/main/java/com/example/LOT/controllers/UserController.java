@@ -10,7 +10,7 @@ import java.util.List;
 
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
-
+@RequestMapping("/users")
 public class UserController {
 
     private final UserService userService;
@@ -24,12 +24,12 @@ public class UserController {
         userService.saveUser(registerUserDto);
     }
 
-    @GetMapping("/login/{id}")
+    @GetMapping("/{id}")
     public FindByIdResponseDto findById(@PathVariable Long id) {
         return userService.findById(id);
     }
 
-    @GetMapping("/find")
+    @GetMapping
     public List<User> findAll() {
         return userService.getUsers();
     }

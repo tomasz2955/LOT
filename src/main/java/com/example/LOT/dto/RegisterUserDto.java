@@ -1,7 +1,6 @@
 package com.example.LOT.dto;
 
 
-import com.sun.istack.NotNull;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
