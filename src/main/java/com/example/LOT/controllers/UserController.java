@@ -20,8 +20,8 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public void saveUser(@RequestBody @Valid RegisterUserDto registerUserDto) {
-        userService.saveUser(registerUserDto);
+    public Long saveUser(@RequestBody @Valid RegisterUserDto registerUserDto) {
+        return userService.saveUser(registerUserDto).getId();
     }
 
     @GetMapping("/{id}")
