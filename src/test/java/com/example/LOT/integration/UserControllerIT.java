@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
@@ -27,6 +28,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 public class UserControllerIT {
 
     @Autowired
@@ -46,8 +48,7 @@ public class UserControllerIT {
         //when
         ResultActions saveUserResponse = mockMvc.perform(post("/users/register")
                 .content(objectMapper.writeValueAsString(userDto))
-                .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON));
+                .contentType(MediaType.APPLICATION_JSON));
 
         //then
         saveUserResponse.andExpect(status().isOk());
@@ -56,20 +57,21 @@ public class UserControllerIT {
         String id = saveUserResponse.andReturn().getResponse().getContentAsString();
         ResultActions getUserResponse = mockMvc.perform(get("/users/" + id));
 
+
+        // objectMapper.readValue(getUserResponse.andReturn().getResponse().getContentAsString(), FindByIdResponseDto.class)
         //then
         getUserResponse.andExpect(status().isOk()).andDo(print())
                 .andExpect(jsonPath("$.name").value("Tomasz"))
                 .andExpect(jsonPath("$.lastName").value("Bator"))
-                .andExpect(jsonPath("$.email").value("email@gmail.com"))
-                .andExpect(jsonPath("$.phoneNumber").value("555444333"))
+                .andExpect(jsonPath("$.email").value(userDto.getEmail()))
+                .andExpect(jsonPath("$.phoneNumber").value(userDto.getPhoneNumber()))
                 .andExpect(jsonPath("$.tickets").isArray());
     }
-
 
     @Test
     public void shouldThrowExceptionWhenSavedUserHasWrongEmail() throws Exception {
         //given
-        RegisterUserDto userDto = new RegisterUserDto("Tomasz_Bator", "WRONG_EMAIL", "555444333", "password");
+        RegisterUserDto userDto = new RegisterUserDto("Tomasz_Bator", "WRONG_EMAIL", "1", "123");
 
         //when
         ResultActions saveUserResponse = mockMvc.perform(post("/users/register")
@@ -78,13 +80,13 @@ public class UserControllerIT {
                 .accept(MediaType.APPLICATION_JSON));
 
         //then
+        //TODO rozpudowac test o więcej błędów pól
         saveUserResponse.andExpect(status().isBadRequest()).
                 andDo(print())
                 .andExpect(jsonPath("$.fieldValidationMessages[0]").value("email - Email should be valid"));
     }
 
     //TODO update user - zapisać, wziąć id i zrobić update i odczytać
-
     //TODO update user - przekazać za krótki password i sprawdzić że poleci wyjątek
 
     @Test
@@ -98,7 +100,7 @@ public class UserControllerIT {
         ResultActions response = mockMvc.perform(get("/users"));
         //then
         response.andExpect(status().isOk()).andDo(print())
-                .andExpect(jsonPath("$[0].name").value("Janusz")) //TODO zmienne
+                .andExpect(jsonPath("$[0].name").value(savedUser1.getName())) //TODO zmienne
                 .andExpect(jsonPath("$[0].lastName").value("Kowalski"))
                 .andExpect(jsonPath("$[0].email").value("email@gmail.com"))
                 .andExpect(jsonPath("$[0].phoneNumber").value("555444333"))
@@ -109,5 +111,4 @@ public class UserControllerIT {
                 .andExpect(jsonPath("$[1].phoneNumber").value("555444333"))
                 .andExpect(jsonPath("$[1].tickets").isArray());
     }
-
 }
